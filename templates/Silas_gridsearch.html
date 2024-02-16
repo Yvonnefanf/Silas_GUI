@@ -1,0 +1,454 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+  <script src="{{ url_for('static', filename='js/vue.min.js') }}"></script>
+  <!-- <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script> -->
+  <!-- <script src="{{ url_for('static', filename='js/ace.js') }}"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+
+  <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+  <!-- <script src="./eleui.js"></script> -->
+  <script src="{{ url_for('static', filename='js/eleui.js') }}"></script>
+  <!-- <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script> -->
+  <!-- <script src="https://www.runoob.com/static/js/wonderland.js"></script> -->
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+  <script src="{{ url_for('static', filename='js/d3.v5.min.js') }}"></script>
+  
+</head>
+
+
+<body>
+ 
+  <div id="app">
+    <div class="content" v-loading="isLoading" element-loading-text="loading..." element-loading-background="rgba(0, 0, 0, 0.8)">
+      <el-menu default-active="grid" class="el-menu-vertical-demo" background-color="rgb(59, 65, 79,0.5)"
+        text-color="#909399" :router="true" active-text-color="#ffd04b">
+        <div style="padding-top:20px;">
+          <img height="30px"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAoCAYAAAC8cqlMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAGrWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDIgNzkuMTYwOTI0LCAyMDE3LzA3LzEzLTAxOjA2OjM5ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAxOC0wNy0xOVQxOTowMCsxMDowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAxOS0wMS0wNlQxNToxOTowNysxMDowMCIgeG1wOk1vZGlmeURhdGU9IjIwMTktMDEtMDZUMTU6MTk6MDcrMTA6MDAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODNmM2QyMTQtMmJhMC0zMjRhLWI3OTEtMDAzMDhhZTBmNDNmIiB4bXBNTTpEb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6Y2JkNmFmODgtMTNiNy1kZjQ3LWFjYTktYTA1NmRkYWFmZGMyIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6ZmM4ODU4MjctOGE5NC0xNzQ5LWIxMGMtMDMwNTFmMWQzZjAxIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyIgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIgcGhvdG9zaG9wOklDQ1Byb2ZpbGU9InNSR0IgSUVDNjE5NjYtMi4xIj4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpmYzg4NTgyNy04YTk0LTE3NDktYjEwYy0wMzA1MWYxZDNmMDEiIHN0RXZ0OndoZW49IjIwMTgtMDctMTlUMTk6MDArMTA6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAoV2luZG93cykiLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOmMwOGMxOGJhLTA2MjgtN2U0OS1iMzkwLTMwOGRmMDhkYmY0NSIgc3RFdnQ6d2hlbj0iMjAxOC0wNy0xOVQxOTowMCsxMDowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6ODNmM2QyMTQtMmJhMC0zMjRhLWI3OTEtMDAzMDhhZTBmNDNmIiBzdEV2dDp3aGVuPSIyMDE5LTAxLTA2VDE1OjE5OjA3KzEwOjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PkOhW6IAAAJtSURBVFjD3dhLiI1RHADws5BCihQLJXkTFiLDNFKGsrBWygILG8LIIxtWMiGSZxJ5JMnOQhYeE6KI8shk5ZnXCOOV5GfhTL7G7c6933yf7ufUt7n3/M///M7533vOvQGPMQehoM9itAZ8wKICQzbhWcBzbCgwZC8eBLRiZ4Ehp3E94CZOFBhyCWcDzsenqJA7OBxwPO5KUSGP0BywAw9TDNCAoRlOaAympYh7gaaA9XiaYoBruJLxyp5OEfcOC0I8Q96mGGARfqB3BoihfrfGKuP6x3NwVsBcvEffKgfpiW/xZM3iUGtLETcCnzAhYEhcjZ84gvoqBrqAlgwgD3Gsiv6zcSrOux29k7J9eONPu4qlXezUwrgrvbpZVj8xs0yfAViFW4n5vcA2DEYoFdQPy3EjEfQEuzCxU98e+NzN8tqI1yVen4qDeBnn8AOXsQR9OvevJNEMHE3s1hecw/z4/sl4uqaF3MXWxE32Er4nVv0ApnQ1TrVJB2EtbsdEbbFG32BgCsRYfI3fmu1x1a9jWayMisfq7od0HnbjY4RdiefS+DIxk2M53Ywxr2KtN3ZnLlkdZjv83Z5gTyzNRhxK1HuyrctiDllBZkrfxtUSpOOKUW27mlX+LCHbU0DW1iJkRgrI2FqEdPxsrrRleXPOHFJNea2pZUhDFZDRtQzpuMl21VqyzpsHZGsFkNVFgNRXABlVBEjAgzKIy3nkzAvSXAbSVCTI9DKQkUWCBNwvgbiYV748IVtKQFYWETKtBGR4ESEB9xKIC3nmyhuyOQFZUWRIXQIyrMiQEP8leZR3nn8BOYP9/wOkDpPyzvMLDphwAHNEbf0AAAAASUVORK5CYII=">
+          <div>
+            <span style="font-weight: 800; display: inline-block; margin-left: 10px;"><span
+                style="color:#e4a035">Silas</span>
+              Pro</span>
+          </div>
+        </div>
+        <el-divider></el-divider>
+        <el-menu-item index="Home" @click="goPage('index')">
+          <i class="el-icon-s-home"></i>
+          <span slot="title">Home</span>
+        </el-menu-item>
+        <el-menu-item index="train" @click="goPage('trainPage')">
+          <i class="el-icon-document-copy"></i>
+          <span slot="title">Training</span>
+        </el-menu-item>
+        <el-menu-item index="test" @click="goPage('testPage')">
+          <i class="el-icon-reading"></i>
+          <span slot="title">Cross Validation</span>
+        </el-menu-item>
+        <el-menu-item index="predict" @click="goPage('predictPage')">
+          <i class="el-icon-view"></i>
+          <span slot="title">Prediction</span>
+        </el-menu-item>
+        <el-menu-item index="grid" @click="goPage('gridSearchPage')">
+          <i class="el-icon-search"></i>
+          <span slot="title">GridSearch</span>
+        </el-menu-item>
+        <el-menu-item index="extension" @click="goPage('extensionPage')">
+          <i class="el-icon-setting"></i>
+          <span slot="title">Model Explanation</span>
+        </el-menu-item>
+        <el-menu-item index="extension" @click="goPage('featurePage')">
+          <i class="el-icon-takeaway-box"></i>
+          <span slot="title">Feature importance</span>
+        </el-menu-item>
+      </el-menu>
+      <div class="page-content" style="display: flex;" >
+        <!-- <el-button type="primary" size="mini" @click="gengridSearch"> -->
+      <div style="width: 320px; height: calc(100vh - 40px); padding-right: 10px; border-right: 1px solid #666;">
+        <div class="silas-btn" @click="gengridSearch">
+          Generate Grid Setting
+        </div>
+
+        <div ref="editorContainer" style="height: calc(100vh - 90px); margin: 15px 0;"></div>
+  
+       
+        <!-- <el-input class="json-editor" style="margin:15px 0;" type="textarea" :autosize="{ minRows: 4, maxRows: 4}"
+          v-model="gridSettingJson">
+        </el-input> -->
+      </div>
+      <div style="flex:1;margin-left: 30px;">
+        <div style="display: flex; align-items: center;">
+          <span>Model Setting Path: </span><el-input v-model="jsonPath" style="width: 250px;margin:0 10px;"></el-input>
+          <div class="silas-btn" @click="gridsearch">
+            Grid Search</div>
+        </div>
+     
+        <el-divider></el-divider>
+        <h3>Search Result:</h3>
+        <el-table :data="gridSearchResData" style="width: 96%" height="calc(100vh - 170px)">
+          <el-table-column type="expand">
+            <template slot-scope="scope">
+              <div style="padding-left: 20px; text-align: left; background-color: rgb(41, 41, 41);">
+                <span style="white-space: pre-line;font-family: monospace;line-height: 16px;
+                color: #e6a23c; font-size: 14px;" v-html="scope.row.settings"></span>
+              </div>
+
+            </template>
+          </el-table-column>
+          <el-table-column prop="path" label="Path" width="360">
+          </el-table-column>
+          <el-table-column prop="Accuracy" sortable label="Accuracy">
+          </el-table-column>
+          <el-table-column prop="ROC-AUC" sortable label="ROC-AUC">
+          </el-table-column>
+          <el-table-column prop="Time(ms)" label="Time(ms)">
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
+    </div>
+</div>
+</body>
+
+<script>
+
+  new Vue({
+
+
+
+    el: '#app',
+
+    data() {
+      return {
+        gridSettingJson: '-',
+        isLoading: false,
+        gridSearchResData: [],
+        jsonPath: 'silas-temp/results/settings.json',
+        startLoading: true
+      }
+    },
+    methods: {
+      goPage(pageName) {
+        this.isLoading = true
+        if (pageName === 'index') {
+          window.location.href = `http://127.0.0.1:3333/SilasGUI`
+        } else {
+          let arr = document.location.pathname.split('/')
+          arr.pop()
+          let newStr = arr.join('/')
+          window.location.href = `${newStr}/${pageName}`
+        }
+      },
+      gengridSearch() {
+        let that = this
+        that.isLoading = true
+        $.ajax({
+          method: 'GET',
+          url: `${document.location.pathname}/gengridSearch`,
+          success: function (result) {
+            console.log('rrre', result)
+            that.isLoading = false
+            that.gridSettingJson = JSON.stringify(result.gridsearchjson)
+            that.editor.setValue(JSON.stringify(result.gridsearchjson,null, 2), -1)
+            // console.log(that.gridSettingJson)
+          }
+        });
+      },
+      gridsearch() {
+        let that = this
+        that.isLoading = true
+        that.gridSettingJson = this.editor.session.getValue()
+
+        $.ajax({
+          method: 'POST',
+          url: `${document.location.pathname}/gridSearch`,
+          contentType: 'application/json;charset=utf-8',//
+          data: JSON.stringify({
+            "jsonPath": that.jsonPath,
+            "gridSettingJson": that.gridSettingJson
+          }),
+          success: function (result) {
+            that.isLoading = false
+            that.getGridSearchRes()
+            // that.gridSettingJson = JSON.stringify(result.gridsearchjson)
+            // console.log(that.gridSettingJson)
+          }
+        });
+      },
+      getGridSearchRes() {
+        let that = this
+        that.isLoading = true
+        $.ajax({
+          method: 'GET',
+          url: `${document.location.pathname}/getGridSearchRes`,
+          success: function (result) {
+            that.isLoading = false
+            for (let i = 0; i < result.data.length; i++) {
+              console.log(result.data[i].settings, JSON.stringify(result.data[i].settings))
+              result.data[i].settings = JSON.stringify(result.data[i].settings)
+              result.data[i].settings = result.data[i].settings.replace(/,/g, ",\n")
+              result.data[i].settings = result.data[i].settings.replace(/{/g, "{\n ")
+              result.data[i].settings = result.data[i].settings.replace(/{/g, `<span style="color:rgb(63 140 219)">{</span>`)
+              result.data[i].settings = result.data[i].settings.replace(/}/g, `<span style="color:rgb(63 140 219)">}</span>`)
+
+            }
+            that.gridSearchResData = result.data
+          }
+        });
+      }
+
+    },
+
+
+    mounthed() {
+      console.log('89898989')
+    },
+    created() {
+      this.getGridSearchRes()
+
+      setTimeout(() => {
+          this.editor = window.ace.edit(this.$refs.editorContainer);
+          console.log(" this.editor", this.editor)
+          this.editor.setTheme("ace/theme/merbivore_soft");
+          this.editor.session.setMode("ace/mode/javascript");
+
+          this.editor.setValue("{}", -1)
+          // this.editor.setReadOnly(true)
+          // this.editor
+        })
+    }
+
+  })
+</script>
+
+</html>
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  #app {
+    background-color: rgb(39, 41, 44);
+    color: #fff;
+    font-family: -apple-system, SF UI Text, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
+  }
+
+  header {
+    box-shadow: 1px 1px 10px #000000;
+  }
+
+  header:hover {
+    box-shadow: 1px 1px 20px #000000;
+  }
+
+  #app .content {
+    height: calc(100vh);
+    display: flex;
+    min-width: 900px;
+  }
+
+  .el-menu {
+    border-right: 1px solid rgba(0, 0, 0, 0);
+    text-align: center;
+  }
+
+  .el-menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .el-menu-item,
+  .el-submenu__title {
+    line-height: 26px;
+    font-size: 12px;
+    background-color: rgb(59, 65, 79, 0) !important;
+  }
+
+  .el-submenu__title:hover {
+    background-color: rgb(59, 65, 79, 0) !important;
+    color: #fff !important;
+  }
+
+  .el-menu-item:hover {
+    background-color: rgb(59, 65, 79, 0) !important;
+    color: #fff !important;
+  }
+
+  .el-menu-item i {
+    color: #fff;
+    font-weight: 800;
+  }
+
+  .page-content {
+    padding: 20px;
+    width: 88%;
+    /* display: flex; */
+  }
+
+  .model-training-form {
+    margin-top: 20px;
+  }
+
+  .el-form-item__label {
+    color: #fff;
+  }
+
+  .el-input__inner,
+  .el-select-dropdown__list,
+  .el-select-dropdown__item {
+    background-color: rgb(39 41 44);
+    color: #fff;
+    border: 1px solid rgb(110, 110, 110);
+  }
+
+  .el-select-dropdown__item.hover,
+  .el-select-dropdown__item:hover {
+    background-color: #000;
+  }
+
+  .el-select .el-input__inner:focus,
+  .el-range-editor.is-active,
+  .el-range-editor.is-active:hover,
+  .el-select .el-input.is-focus .el-input__inner,
+  .el-input__inner:focus {
+    border-color: #e4a035;
+  }
+
+  .el-select-dropdown__item.selected {
+    color: #e4a035;
+  }
+
+  .el-button--primary {
+    background-color: #e4a035;
+    border-color: #e4a035;
+  }
+
+  .el-button--primary:hover {
+    background-color: #eebd6e;
+    border-color: #f5cc8b;
+  }
+
+  .layout-middle-content {
+    margin-top: 20px;
+    display: flex;
+    height: calc(100vh - 190px);
+  }
+
+  .title {
+    font-weight: 800;
+  }
+
+  .form-conatiner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* flex-wrap:wrap; */
+    /* justify-content: space-around; */
+  }
+
+  .form-item-row {
+    display: flex;
+    align-items: center;
+    width: 300px;
+    height: 7%;
+  }
+
+  .form-item-label {
+    display: inline-block;
+    margin-right: 10px;
+    display: inline-block;
+    width: 120px;
+  }
+
+  .el-card__body {
+    padding-top: 0;
+  }
+
+  .el-textarea__inner {
+    background-color: rgb(49 53 62);
+    color: #fff;
+    border: 1px dashed #666;
+  }
+
+  .el-table tr {
+    background-color: rgba(59, 65, 79, 0.5);
+    color: #fff;
+  }
+
+  .el-table tbody tr:hover>td {
+    background-color: rgb(59, 65, 79) !important;
+  }
+
+  .el-table th.el-table__cell {
+    background-color: rgb(59, 65, 79);
+    color: #fff;
+    font-size: 16px;
+  }
+
+  .el-table .el-table__cell {
+    text-align: center;
+    background-color: rgb(55, 59, 71);
+    font-size: 14px;
+    padding: 9px 0;
+  }
+
+  .el-table td.el-table__cell,
+  .el-table th.el-table__cell.is-leaf {
+    border-bottom: 1px dashed rgba(110, 113, 121, 0.7);
+  }
+
+  .el-table,
+  .el-table__expanded-cell {
+    background-color: unset;
+  }
+
+  .el-table__row>td {
+    border: none;
+  }
+
+  .el-table::before {
+    height: 0;
+  }
+
+  .json-editor {
+    font-family: monospace;
+  }
+
+  .el-table__expand-icon>.el-icon {
+    color: #ccc;
+  }
+
+  .el-divider--horizontal {
+    background-color: #666;
+  }
+
+  .silas-btn {
+    height: 24px;
+    line-height: 24px;
+    border: 1px solid #e4a035;
+    color: #e4a035;
+    width: 200px;
+    cursor: pointer;
+    padding: 6px 10px;
+    text-align: center;
+    font-weight: 800;
+    border-radius: 3px;
+    /* background: #e4a035; */
+  }
+  .silas-btn:hover{
+    /* color: #e4a035; */
+    border: 1px solid #e4a035;
+    cursor: pointer;
+    background: #e4a035;
+    color: #fff;
+  }
+</style>

@@ -1,0 +1,597 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <script src="{{ url_for('static', filename='js/vue.min.js') }}"></script>
+  <!-- <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script> -->
+  <!-- <script src="{{ url_for('static', filename='js/ace.js') }}"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+
+  <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+  <!-- <script src="./eleui.js"></script> -->
+  <script src="{{ url_for('static', filename='js/eleui.js') }}"></script>
+  <!-- <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script> -->
+  <!-- <script src="https://www.runoob.com/static/js/wonderland.js"></script> -->
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+  <script src="{{ url_for('static', filename='js/d3.v5.min.js') }}"></script>
+</head>
+
+<body>
+  <div id="app">
+    <div class="content">
+      <el-menu default-active="feature" class="el-menu-vertical-demo" background-color="rgb(59, 65, 79,0.5)"
+        text-color="#fff" :router="true" active-text-color="#ffd04b">
+        <div style="padding-top:20px;">
+          <img height="30px"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAoCAYAAAC8cqlMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAGrWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDIgNzkuMTYwOTI0LCAyMDE3LzA3LzEzLTAxOjA2OjM5ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAxOC0wNy0xOVQxOTowMCsxMDowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAxOS0wMS0wNlQxNToxOTowNysxMDowMCIgeG1wOk1vZGlmeURhdGU9IjIwMTktMDEtMDZUMTU6MTk6MDcrMTA6MDAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODNmM2QyMTQtMmJhMC0zMjRhLWI3OTEtMDAzMDhhZTBmNDNmIiB4bXBNTTpEb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6Y2JkNmFmODgtMTNiNy1kZjQ3LWFjYTktYTA1NmRkYWFmZGMyIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6ZmM4ODU4MjctOGE5NC0xNzQ5LWIxMGMtMDMwNTFmMWQzZjAxIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyIgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIgcGhvdG9zaG9wOklDQ1Byb2ZpbGU9InNSR0IgSUVDNjE5NjYtMi4xIj4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpmYzg4NTgyNy04YTk0LTE3NDktYjEwYy0wMzA1MWYxZDNmMDEiIHN0RXZ0OndoZW49IjIwMTgtMDctMTlUMTk6MDArMTA6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAoV2luZG93cykiLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOmMwOGMxOGJhLTA2MjgtN2U0OS1iMzkwLTMwOGRmMDhkYmY0NSIgc3RFdnQ6d2hlbj0iMjAxOC0wNy0xOVQxOTowMCsxMDowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6ODNmM2QyMTQtMmJhMC0zMjRhLWI3OTEtMDAzMDhhZTBmNDNmIiBzdEV2dDp3aGVuPSIyMDE5LTAxLTA2VDE1OjE5OjA3KzEwOjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PkOhW6IAAAJtSURBVFjD3dhLiI1RHADws5BCihQLJXkTFiLDNFKGsrBWygILG8LIIxtWMiGSZxJ5JMnOQhYeE6KI8shk5ZnXCOOV5GfhTL7G7c6933yf7ufUt7n3/M///M7533vOvQGPMQehoM9itAZ8wKICQzbhWcBzbCgwZC8eBLRiZ4Ehp3E94CZOFBhyCWcDzsenqJA7OBxwPO5KUSGP0BywAw9TDNCAoRlOaAympYh7gaaA9XiaYoBruJLxyp5OEfcOC0I8Q96mGGARfqB3BoihfrfGKuP6x3NwVsBcvEffKgfpiW/xZM3iUGtLETcCnzAhYEhcjZ84gvoqBrqAlgwgD3Gsiv6zcSrOux29k7J9eONPu4qlXezUwrgrvbpZVj8xs0yfAViFW4n5vcA2DEYoFdQPy3EjEfQEuzCxU98e+NzN8tqI1yVen4qDeBnn8AOXsQR9OvevJNEMHE3s1hecw/z4/sl4uqaF3MXWxE32Er4nVv0ApnQ1TrVJB2EtbsdEbbFG32BgCsRYfI3fmu1x1a9jWayMisfq7od0HnbjY4RdiefS+DIxk2M53Ywxr2KtN3ZnLlkdZjv83Z5gTyzNRhxK1HuyrctiDllBZkrfxtUSpOOKUW27mlX+LCHbU0DW1iJkRgrI2FqEdPxsrrRleXPOHFJNea2pZUhDFZDRtQzpuMl21VqyzpsHZGsFkNVFgNRXABlVBEjAgzKIy3nkzAvSXAbSVCTI9DKQkUWCBNwvgbiYV748IVtKQFYWETKtBGR4ESEB9xKIC3nmyhuyOQFZUWRIXQIyrMiQEP8leZR3nn8BOYP9/wOkDpPyzvMLDphwAHNEbf0AAAAASUVORK5CYII=">
+          <div>
+            <span style="font-weight: 800; display: inline-block; margin-left: 10px;"><span
+                style="color:#e4a035">Silas</span>
+              Pro</span>
+          </div>
+        </div>
+        <el-divider></el-divider>
+        <el-menu-item index="Home" @click="goPage('index')">
+          <i class="el-icon-s-home"></i>
+          <span slot="title">Home</span>
+        </el-menu-item>
+        <el-menu-item index="train" @click="goPage('trainPage')">
+          <i class="el-icon-document-copy"></i>
+          <span slot="title">Training</span>
+        </el-menu-item>
+        <el-menu-item index="test" @click="goPage('testPage')">
+          <i class="el-icon-reading"></i>
+          <span slot="title">Cross Validation</span>
+        </el-menu-item>
+        <el-menu-item index="predict" @click="goPage('predictPage')">
+          <i class="el-icon-view"></i>
+          <span slot="title">Prediction</span>
+        </el-menu-item>
+        <el-menu-item index="grid" @click="goPage('gridSearchPage')">
+          <i class="el-icon-search"></i>
+          <span slot="title">GridSearch</span>
+        </el-menu-item>
+        <el-menu-item index="extension" @click="goPage('extensionPage')">
+          <i class="el-icon-setting"></i>
+          <span slot="title">Model Explanation</span>
+        </el-menu-item>
+        <el-menu-item index="feature" @click="goPage('extensionPage')">
+          <i class="el-icon-takeaway-box"></i>
+          <span slot="title">Feature Importance</span>
+        </el-menu-item>
+      </el-menu>
+      <div class="page-content" v-loading="showLoading" element-loading-background="rgba(0, 0, 0, 0.8)">
+        <el-card
+          style="flex:1;background-color: rgb(59 65 79 / 30%); border-color: rgb(59 65 79 / 10%); color:#fff; height: 100%;">
+          <div
+            style="margin-top: 20px; background-color: rgb(59 65 79 / 50%); padding:10px 20px;text-align: center; position:relative;">
+            <h3>Feature Importance Settings</h3>
+            <el-form class="model-explanaton-form" label-width="150px" style="margin-bottom: 80px;">
+              <el-form-item label="Model Path:">
+                <el-select v-model="modelPath">
+                  <el-tooltip class="item" effect="dark" content="path: silas-temp/results/model" placement="right-start">
+                    <el-option value="silas-temp/results/model" label="Trained model">
+                    </el-option>
+                  </el-tooltip>
+                  <el-tooltip class="item" effect="dark" content="path: silas-temp/validation-results/model" placement="right-start">
+                    <el-option value="silas-temp/validation-results/model" label="Validated model">
+                    </el-option>
+                  </el-tooltip>
+
+                  <el-tooltip class="item" effect="dark" content="path: OptExplain/optexplain-example/models" placement="right-start">
+                  <el-option value="OptExplain/optexplain-example/models" label="Example model">
+                  </el-option>
+                  </el-tooltip>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="Testing File:">
+                <!-- <el-input v-model="testFilePath"></el-input> -->
+                <el-upload class="upload-demo" style="text-align:left;" :data="{'fileName':'featureImportance_test.csv'}"
+                action="http://127.0.0.1:3333/SilasGUI/uploadFile" :file-list="fileList" :limit="1" accept=".csv"
+                :on-success="handleSuccess" :on-remove="handleRemove">
+                <el-button size="small" type="primary" v-if="!canFeaClick"><i class="el-icon-upload"></i> Test Dataset File</el-button>
+                <el-button size="small" type="primary" v-else slot='tip' disabled><i class="el-icon-upload"></i> Test Dataset File</el-button>
+                <!-- <div slot="tip" class="el-upload__tip">最多可上传5个，文件大小不超过50MB</div> -->
+               </el-upload>
+              </el-form-item>
+              <!-- <el-sdivider dashed></el-divider> -->
+              <div class="feature-im-btn" @click="explaination('feature')">Feature Importance
+              </div>
+              <!-- <el-button style="width:100%" type="primary" @click="explaination('feature')">Feature Importance
+              </el-button> -->
+            </el-form>
+            <el-divider></el-divider>
+            <div style="height: calc(100vh - 360px); overflow: auto;">
+              <el-table class="sub-table" :data="featureImportanceList">
+                <el-table-column type="expand">
+                  <template slot-scope="scope">
+                    <el-table :data="scope.row.details">
+                      <el-table-column label="Feature Name" prop="name">
+                      </el-table-column>
+                      <el-table-column label="Importantce Value" prop="value">
+                      </el-table-column>
+                    </el-table>
+
+                  </template>
+                </el-table-column>
+                <el-table-column label="Class Name" prop="class">
+                </el-table-column>
+                <el-table-column label="Sub Feature Number" prop="sublenght">
+                </el-table-column>
+
+              </el-table>
+            </div>
+
+          </div>
+        </el-card>
+        <el-card
+          style="flex:1; margin-left: 20px;background-color: rgb(59 65 79 / 30%); border-color: rgb(59 65 79 / 10%); color:#fff; height: 100%;">
+          <div
+            style="margin-top: 20px;background-color: rgb(59 65 79 / 50%); padding:10px 20px; text-align: center; position: relative;">
+            <h3>Adversarial samples Settings</h3>
+            <el-form class="model-explanaton-form" label-width="150px" style="margin-bottom: 80px;">
+              <el-form-item label="Model Path:">
+                <el-select v-model="modelPath_for_adv">
+                  <el-tooltip class="item" effect="dark" content="path: silas-temp/results/model" placement="right-start">
+                    <el-option value="silas-temp/results/model" label="Trained model">
+                    </el-option>
+                  </el-tooltip>
+                  <el-tooltip class="item" effect="dark" content="path: silas-temp/validation-results/model" placement="right-start">
+                    <el-option value="silas-temp/validation-results/model" label="Validated model">
+                    </el-option>
+                  </el-tooltip>
+
+                  <el-tooltip class="item" effect="dark" content="path: OptExplain/optexplain-example/models" placement="right-start">
+                  <el-option value="OptExplain/optexplain-example/models" label="Example model">
+                  </el-option>
+                  </el-tooltip>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="Testing File:">
+                <el-upload class="upload-demo" style="text-align:left;" :data="{'fileName':'adversial_test.csv'}"
+                action="http://127.0.0.1:3333/SilasGUI/uploadFile" :file-list="fileList" :limit="1" accept=".csv"
+                :on-success="handleAdvSuccess" :on-remove="handleAdvRemove">
+                <el-button size="small" type="primary" v-if="!canAdvClick"><i class="el-icon-upload"></i> Test Dataset File</el-button>
+                <el-button size="small" type="primary" v-else slot='tip' disabled><i class="el-icon-upload"></i> Test Dataset File</el-button>
+                <!-- <div slot="tip" class="el-upload__tip">最多可上传5个，文件大小不超过50MB</div> -->
+               </el-upload>
+                <!-- <el-input v-model="testFilePath"></el-input> -->
+              </el-form-item>
+              <div class="feature-im-btn" @click="explaination('adversarial')">Adversarial Samples
+              </div>
+            </el-form>
+            <el-divider></el-divider>
+            <div>
+              Resultes
+              <div style="display: flex; margin-top: 20px;">
+                <el-card class="res-card">
+                  <span style="font-size: 12px;" >Original class:</span>
+                  <br/>
+                  <span style="line-height: 50px;" v-html="adversarialObj.orgClass"></span>
+                </el-card>
+                <el-card class="res-card" style="margin: 0 10px;">
+                  <span style="font-size: 12px;">Adv sample class:</span>
+                  <br/>
+                  <span style="line-height: 50px;" v-html="adversarialObj.advSamClass"></span>
+                </el-card>
+                <el-card class="res-card">
+                  <span style="font-size: 12px;">Distance</span><br/>
+                  <span style="line-height: 50px;" v-html="adversarialObj.Distance"></span>
+                </el-card>
+              </div>
+               
+
+            </div>
+          </div>
+
+
+        </el-card>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  // window.echarts = echarts;
+  // import * as echarts from 'echarts';
+  new Vue({
+
+    el: '#app',
+    data() {
+      return {
+        modelPath: "OptExplain/optexplain-example/models",
+        modelPath_for_adv: "OptExplain/optexplain-example/models",
+        testFilePath: "OptExplain/optexplain-example/test.csv",
+        PSOIterationsNum: 20,
+        PSOParticlesNum: 20,
+        accWeight: 0.5,
+        conjunction: 'yes',
+        explanationData: [],
+        showPSO: false,
+        showLoading: false,
+        fileList:[],
+        // posList:[1,2,4]
+        // posStr: '',
+        performance: {
+          "Coverage": '-',
+          "EX AUC": '-',
+          "EX accuracy": "-",
+          "Overlap": "-",
+          "Performance": '-',
+          "RF AUC": "-",
+          "RF accuracy": "-",
+          "Sample size": '-'
+        },
+        featureImportanceList: [],
+        adversarialObj: {
+          "Distance": "0.0",
+          "advSamClass": 0,
+          "opt_sample": [
+            6.0,
+            147.64441628529508,
+            72.0,
+            35.0,
+            0.0,
+            26.210932884657822,
+            0.6387911514805615,
+            49.92216384827193
+          ],
+          "orgClass": "1",
+          "x": [
+            6,
+            148,
+            72,
+            35,
+            0,
+            33.6,
+            0.627,
+            50
+          ]
+        }
+        ,
+        canAdvClick:false,
+        canFeaClick:false,
+        posStr: "1   10  [0.681 0.103 0.347 1.833]\t 0.81770833  4   fitness: 0.89736548\n2   6   [0.292 0.124 0.267 1.   ]\t 0.81770833  4   fitness: 0.89736548\n3   4   [0.674 0.133 0.344 1.768]\t 0.81770833  4   fitness: 0.89736548\n4   4   [0.758 0.104 0.344 1.23 ]\t 0.81770833  4   fitness: 0.89736548\n5   11  [0.608 0.106 0.422 1.   ]\t 0.83203125  4   fitness: 0.90452694\n6   11  [0.604 0.099 0.432 1.   ]\t 0.83203125  4   fitness: 0.90452694\n7   0   [0.589 0.106 0.497 1.   ]\t 0.83203125  4   fitness: 0.90452694\n8   0   [0.536 0.105 0.55  1.   ]\t 0.81770833  4   fitness: 0.89736548\n9   2   [0.64  0.098 0.417 1.   ]\t 0.81770833  4   fitness: 0.89736548\n10  5   [0.617 0.094 0.37  1.   ]\t 0.85807292  4   fitness: 0.91754777\n11  0   [0.607 0.089 0.379 1.   ]\t 0.85807292  4   fitness: 0.91754777\n12  5   [0.59  0.099 0.395 1.   ]\t 0.81770833  4   fitness: 0.89736548\n13  10  [0.646 0.091 0.335 1.   ]\t 0.85807292  4   fitness: 0.91754777\n14  5   [0.64  0.089 0.35  1.   ]\t 0.85807292  4   fitness: 0.91754777\n15  0   [0.615 0.093 0.375 1.   ]\t 0.85807292  4   fitness: 0.91754777\n16  1   [0.611 0.093 0.378 1.   ]\t 0.85807292  4   fitness: 0.91754777\n17  11  [0.622 0.091 0.346 1.   ]\t 0.85807292  4   fitness: 0.91754777\n18  0   [0.611 0.092 0.379 1.   ]\t 0.85807292  4   fitness: 0.91754777\n19  0   [0.616 0.094 0.373 1.   ]\t 0.85807292  4   fitness: 0.91754777\n20  0   [0.613 0.092 0.373 1.   ]\t 0.85807292  4   fitness: 0.91754777\nOptimal parameters: [0.617 0.094 0.37  1.   ]\n20  0   [0.613 0.092 0.373 1.   ]\t 0.85807292  4   fitness: 0.91754777"
+      }
+    },
+    methods: {
+      goPage(pageName) {
+        if (pageName === 'index') {
+          window.location.href = `http://127.0.0.1:3333/SilasGUI`
+        } else {
+          let arr = document.location.pathname.split('/')
+          arr.pop()
+          let newStr = arr.join('/')
+          window.location.href = `${newStr}/${pageName}`
+        }
+      },
+      handleSuccess(){
+        this.canFeaClick = true
+      },
+      handleRemove(){
+        this.canFeaClick = false
+      },
+      handleAdvSuccess(){
+        this.canAdvClick = true
+      },
+      handleAdvRemove(){
+        this.canAdvClick = false
+      },
+      explaination(type) {
+        console.log("type", type)
+        let that = this
+        this.showLoading = true
+        let model_path = that.modelPath
+
+        if(type === 'adversarial'){
+          model_path = that.modelPath_for_adv
+        }
+
+        $.ajax({
+          method: 'POST',
+          url: `${document.location.pathname}/featureImportance`,
+          contentType: 'application/json;charset=utf-8',//请求数据类型必须有
+          data: JSON.stringify({
+            "type": type,
+            "model_path": model_path,
+            "test_file_path": that.testFilePath
+          }),
+          success: function (result) {
+            if (type == 'feature') {
+              console.log("resss", result)
+              that.featureImportanceList = result.featureImportance
+            } else {
+              that.adversarialObj = result.adversarialObj
+            }
+
+            that.showLoading = false
+            // that.gridSettingJson = JSON.stringify(result.gridsearchjson)
+            // console.log(that.gridSettingJson)
+          }
+        });
+      },
+    },
+
+
+    mounthed() {
+      console.log('89898989')
+      // this.draModelInsightChart()
+      // this.posList.join('\n')
+    },
+    created() {
+      console.log('created')
+      let that = this
+      // this.draModelInsightChart()
+
+
+    }
+
+  })
+</script>
+
+</html>
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  #app {
+    background-color: rgb(39, 41, 44);
+    color: #fff;
+    font-family: -apple-system, SF UI Text, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
+  }
+
+  header {
+    box-shadow: 1px 1px 10px #000000;
+  }
+
+  header:hover {
+    box-shadow: 1px 1px 20px #000000;
+  }
+
+  #app .content {
+    height: calc(100vh);
+    display: flex;
+    min-width: 900px;
+  }
+
+  .el-menu {
+    border-right: 1px solid rgba(0, 0, 0, 0);
+    text-align: center;
+  }
+  .el-select-dropdown,.el-tooltip__popper{
+    font-family: -apple-system, SF UI Text, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
+  }
+
+  .el-select{
+    width: 100%;
+  }
+
+  .el-menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .el-menu-item,
+  .el-submenu__title {
+    line-height: 26px;
+    font-size: 12px;
+    background-color: rgba(59, 65, 79, 0) !important;
+  }
+
+  .el-submenu__title:hover {
+    background-color: rgba(59, 65, 79, 0) !important;
+    color: #fff !important;
+  }
+
+  .el-menu-item:hover {
+    background-color: rgba(59, 65, 79, 0) !important;
+    color: #fff !important;
+  }
+
+  .page-content {
+    padding: 20px;
+    display: flex;
+    width: 100%;
+  }
+
+  .extension-result-container {
+    flex: 1;
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .model-explanation-form {
+    margin-top: 20px;
+    font-size: 12px;
+  }
+
+  .el-form-item__label {
+    color: #fff;
+  }
+
+  .el-input__inner,
+  .el-select-dropdown__list,
+  .el-select-dropdown__item {
+    background-color: rgb(59 65 79 / 70%);
+    color: #fff;
+    border: 1px solid rgb(110, 110, 110);
+  }
+
+  .el-select-dropdown__item.hover,
+  .el-select-dropdown__item:hover {
+    background-color: #000;
+  }
+
+  .el-select .el-input__inner:focus,
+  .el-range-editor.is-active,
+  .el-range-editor.is-active:hover,
+  .el-select .el-input.is-focus .el-input__inner,
+  .el-input__inner:focus {
+    border-color: #e4a035;
+  }
+
+  .el-select-dropdown__item.selected {
+    color: #e4a035;
+  }
+
+  .el-button--primary {
+    background-color: #e4a035;
+    border-color: #e4a035;
+  }
+  .el-button--primary:focus,
+  .el-button--primary:hover,
+  .el-button--primary.is-disabled,
+  .el-button--primary.is-disabled:focus,
+  .el-button--primary.is-disabled:hover {
+    background-color: #eebd6e;
+    border-color: #f5cc8b;
+  }
+
+  .layout-middle-content {
+    margin-top: 20px;
+    display: flex;
+    height: calc(100vh - 190px);
+  }
+
+  .title {
+    font-weight: 800;
+  }
+
+  .form-conatiner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* flex-wrap:wrap; */
+    /* justify-content: space-around; */
+  }
+
+  .form-item-row {
+    display: flex;
+    align-items: center;
+    width: 300px;
+    height: 7%;
+  }
+
+  .form-item-label {
+    display: inline-block;
+    margin-right: 10px;
+    display: inline-block;
+    width: 120px;
+  }
+
+  .el-card__body {
+    padding-top: 0;
+  }
+
+  .el-table tr {
+    background-color: rgba(59, 65, 79, 0.5);
+    color: #fff;
+  }
+
+  .el-table tbody tr:hover>td {
+    background-color: rgb(59, 65, 79) !important;
+  }
+
+  .el-table th.el-table__cell {
+    background-color: rgb(59, 65, 79, 0.5)!important;
+    color: #fff;
+    font-size: 16px;
+  }
+
+  .el-table .el-table__cell {
+    text-align: center;
+    background-color: rgb(55, 59, 71);
+    font-size: 16px;
+    padding: 9px 0;
+  }
+  .sub-table .el-table th.el-table__cell{
+    font-size: 14px!important;
+    background-color: rgb(49 53 62)!important;
+  }
+  .sub-table .el-table .el-table__cell{
+    font-size: 12px;
+    background-color: rgb(49 53 62);
+  }
+
+  .el-table td.el-table__cell,
+  .el-table th.el-table__cell.is-leaf {
+    border-bottom: 1px dashed rgba(110, 113, 121, 0.7);
+  }
+
+  .el-table,
+  .el-table__expanded-cell {
+    background-color: unset;
+  }
+
+  .el-table__row>td {
+    border: none;
+  }
+
+  .el-table::before {
+    height: 0;
+  }
+
+  .json-editor {
+    font-family: monospace;
+  }
+
+  .el-table__expand-icon>.el-icon {
+    color: #ccc;
+  }
+
+  .el-divider--horizontal {
+    background-color: #666;
+  }
+
+  .performance-card {
+    flex: 1;
+    margin-left: 20px;
+    color: #fff;
+    text-align: center;
+    line-height: 30px;
+    padding-top: 10px;
+    background-color: rgba(59, 65, 79, 0.5);
+    border-color: rgb(59, 65, 79, 0.5);
+  }
+
+  .model-explanaton-form {
+    font-size: 12px !important;
+  }
+
+  .feature-im-btn {
+    border: 1px solid #e4a035;
+    width: 120px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    color: #e4a035;
+    font-weight: 800;
+  }
+
+  .feature-im-btn:hover {
+    color: #fff;
+    background: #e4a035;
+    border: 1px solid #e4a035;
+    
+  }
+  .res-card{
+    background-color: #2d3137;
+    border: none;
+    flex:1;
+    color: #fff;
+    padding-top: 20px;
+  }
+  .el-upload-list {
+    height: 15px;
+  }
+</style>

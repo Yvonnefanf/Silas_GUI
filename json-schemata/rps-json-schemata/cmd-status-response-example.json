@@ -1,0 +1,7 @@
+{
+    "command": "status",
+    "status": "succeeded",
+    "data": {
+        "status": "NOK"
+    }
+}

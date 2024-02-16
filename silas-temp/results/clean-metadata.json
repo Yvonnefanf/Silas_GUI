@@ -1,0 +1,154 @@
+{
+    "attributes": [
+        {
+            "type": "nominal",
+            "name": "preg",
+            "ordered": false,
+            "data-type": "u8",
+            "values": [
+                "0",
+                "0.0",
+                "1",
+                "1.0",
+                "10",
+                "10.0",
+                "11",
+                "11.0",
+                "12",
+                "12.0",
+                "13",
+                "13.0",
+                "14",
+                "15",
+                "17",
+                "2",
+                "2.0",
+                "3",
+                "3.0",
+                "4",
+                "4.0",
+                "5",
+                "5.0",
+                "6",
+                "6.0",
+                "7",
+                "7.0",
+                "8",
+                "8.0",
+                "9",
+                "9.0"
+            ]
+        },
+        {
+            "type": "numerical",
+            "name": "plas",
+            "data-type": "f32",
+            "bounds": {
+                "min": 0.0,
+                "max": 199.0
+            }
+        },
+        {
+            "type": "numerical",
+            "name": "pres",
+            "data-type": "f32",
+            "bounds": {
+                "min": 0.0,
+                "max": 122.0
+            }
+        },
+        {
+            "type": "numerical",
+            "name": "skin",
+            "data-type": "f32",
+            "bounds": {
+                "min": 0.0,
+                "max": 99.0
+            }
+        },
+        {
+            "type": "numerical",
+            "name": "insu",
+            "data-type": "f32",
+            "bounds": {
+                "min": 0.0,
+                "max": 846.0
+            }
+        },
+        {
+            "type": "numerical",
+            "name": "mass",
+            "data-type": "f32",
+            "bounds": {
+                "min": 0.0,
+                "max": 67.1
+            }
+        },
+        {
+            "type": "numerical",
+            "name": "pedi",
+            "data-type": "f32",
+            "bounds": {
+                "min": 0.078,
+                "max": 2.42
+            }
+        },
+        {
+            "type": "numerical",
+            "name": "age",
+            "data-type": "f32",
+            "bounds": {
+                "min": 21.0,
+                "max": 81.0
+            }
+        },
+        {
+            "type": "nominal",
+            "name": "class",
+            "ordered": false,
+            "data-type": "bool",
+            "values": [
+                "tested_negative",
+                "tested_positive"
+            ]
+        }
+    ],
+    "features": [
+        {
+            "feature-name": "preg",
+            "attribute-name": "preg"
+        },
+        {
+            "feature-name": "plas",
+            "attribute-name": "plas"
+        },
+        {
+            "feature-name": "pres",
+            "attribute-name": "pres"
+        },
+        {
+            "feature-name": "skin",
+            "attribute-name": "skin"
+        },
+        {
+            "feature-name": "insu",
+            "attribute-name": "insu"
+        },
+        {
+            "feature-name": "mass",
+            "attribute-name": "mass"
+        },
+        {
+            "feature-name": "pedi",
+            "attribute-name": "pedi"
+        },
+        {
+            "feature-name": "age",
+            "attribute-name": "age"
+        },
+        {
+            "feature-name": "class",
+            "attribute-name": "class"
+        }
+    ]
+}

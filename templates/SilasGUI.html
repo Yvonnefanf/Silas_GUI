@@ -1,0 +1,1734 @@
+
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+  <!-- <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script> -->
+  <script src="{{ url_for('static', filename='js/echarts.min.js') }}"></script>
+
+  <script src="{{ url_for('static', filename='js/vue.min.js') }}"></script>
+  <!-- <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script> -->
+  <!-- <script src="{{ url_for('static', filename='js/ace.js') }}"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+
+  <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+  <!-- <script src="./eleui.js"></script> -->
+  <script src="{{ url_for('static', filename='js/eleui.js') }}"></script>
+  <!-- <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script> -->
+  <!-- <script src="https://www.runoob.com/static/js/wonderland.js"></script> -->
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+  <script src="{{ url_for('static', filename='js/d3.v5.min.js') }}"></script>
+</head>
+
+<body>
+  <div id="app">
+    <el-header style="line-height: 30px; display: flex;align-items: center;">
+      <img height="30px"
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAoCAYAAAC8cqlMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAGrWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDIgNzkuMTYwOTI0LCAyMDE3LzA3LzEzLTAxOjA2OjM5ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAxOC0wNy0xOVQxOTowMCsxMDowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAxOS0wMS0wNlQxNToxOTowNysxMDowMCIgeG1wOk1vZGlmeURhdGU9IjIwMTktMDEtMDZUMTU6MTk6MDcrMTA6MDAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODNmM2QyMTQtMmJhMC0zMjRhLWI3OTEtMDAzMDhhZTBmNDNmIiB4bXBNTTpEb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6Y2JkNmFmODgtMTNiNy1kZjQ3LWFjYTktYTA1NmRkYWFmZGMyIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6ZmM4ODU4MjctOGE5NC0xNzQ5LWIxMGMtMDMwNTFmMWQzZjAxIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyIgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIgcGhvdG9zaG9wOklDQ1Byb2ZpbGU9InNSR0IgSUVDNjE5NjYtMi4xIj4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpmYzg4NTgyNy04YTk0LTE3NDktYjEwYy0wMzA1MWYxZDNmMDEiIHN0RXZ0OndoZW49IjIwMTgtMDctMTlUMTk6MDArMTA6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAoV2luZG93cykiLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOmMwOGMxOGJhLTA2MjgtN2U0OS1iMzkwLTMwOGRmMDhkYmY0NSIgc3RFdnQ6d2hlbj0iMjAxOC0wNy0xOVQxOTowMCsxMDowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6ODNmM2QyMTQtMmJhMC0zMjRhLWI3OTEtMDAzMDhhZTBmNDNmIiBzdEV2dDp3aGVuPSIyMDE5LTAxLTA2VDE1OjE5OjA3KzEwOjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PkOhW6IAAAJtSURBVFjD3dhLiI1RHADws5BCihQLJXkTFiLDNFKGsrBWygILG8LIIxtWMiGSZxJ5JMnOQhYeE6KI8shk5ZnXCOOV5GfhTL7G7c6933yf7ufUt7n3/M///M7533vOvQGPMQehoM9itAZ8wKICQzbhWcBzbCgwZC8eBLRiZ4Ehp3E94CZOFBhyCWcDzsenqJA7OBxwPO5KUSGP0BywAw9TDNCAoRlOaAympYh7gaaA9XiaYoBruJLxyp5OEfcOC0I8Q96mGGARfqB3BoihfrfGKuP6x3NwVsBcvEffKgfpiW/xZM3iUGtLETcCnzAhYEhcjZ84gvoqBrqAlgwgD3Gsiv6zcSrOux29k7J9eONPu4qlXezUwrgrvbpZVj8xs0yfAViFW4n5vcA2DEYoFdQPy3EjEfQEuzCxU98e+NzN8tqI1yVen4qDeBnn8AOXsQR9OvevJNEMHE3s1hecw/z4/sl4uqaF3MXWxE32Er4nVv0ApnQ1TrVJB2EtbsdEbbFG32BgCsRYfI3fmu1x1a9jWayMisfq7od0HnbjY4RdiefS+DIxk2M53Ywxr2KtN3ZnLlkdZjv83Z5gTyzNRhxK1HuyrctiDllBZkrfxtUSpOOKUW27mlX+LCHbU0DW1iJkRgrI2FqEdPxsrrRleXPOHFJNea2pZUhDFZDRtQzpuMl21VqyzpsHZGsFkNVFgNRXABlVBEjAgzKIy3nkzAvSXAbSVCTI9DKQkUWCBNwvgbiYV748IVtKQFYWETKtBGR4ESEB9xKIC3nmyhuyOQFZUWRIXQIyrMiQEP8leZR3nn8BOYP9/wOkDpPyzvMLDphwAHNEbf0AAAAASUVORK5CYII=">
+      <span style="font-weight: 800; display: inline-block; margin-left: 20px;"><span style="color:#e4a035">Silas</span>
+        Pro</span>
+    </el-header>
+    <div class="content">
+      <div class="layout-left">
+        <div class="title">Silas Machine Learning</div>
+        <el-card
+          style="background-color: rgb(47 47 47 / 80%); border-color: rgb(47 47 47 / 80%); color:#fff;margin-top: 20px; height: 94%;">
+          <el-tabs>
+            <el-tab-pane label="Training">
+              <el-form class="model-training-form" ref="form" :model="form" label-width="140px">
+
+                <form action="/SilasGUI/train" enctype="multipart/form-data" method="POST">
+    
+                  <!input name="hyper_parameters" type="checkbox" />
+    
+    
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Task:</span>
+                    <select name="task-mode" class="el-input__inner" style="height: 30px;line-height: 30px;">
+                      <option value="classification" selected>classification</option>
+                      <option value="regression">regression</option>
+                    </select>
+                  </div>
+    
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Tree Algorithm:</span>
+                    <select name="tree-algorithm" class="el-input__inner" style="height: 30px;line-height: 30px;">
+                      <option value="GreedyNarrow1D" selected>GreedyNarrow1D</option>
+                      <option value="others">Others</option>
+                    </select>
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Feature Proportion:</span>
+                    <select name="feature-proportion" value="SQRT" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;">
+                      <option value="sqrt" selected>sqrt</option>
+                      <option value="log">log</option>
+                      <option value="log2">log2</option>
+                      <option value="golden">golden</option>
+                    </select>
+                  </div>
+    
+    
+    
+    
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Maximum Tree Depth:</span>
+    
+                    <input type="text" name="max-depth" value="64" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;">
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Desired Leaf Size:</span>
+                    <input type="text" name="desired-leaf-size" value="64" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;">
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Forest Algorithm:</span>
+                    <select name="forest-algorithm" class="el-input__inner" style="height: 30px;line-height: 30px;">
+                      <option value="ClassicForest" selected>ClassicForest</option>
+                      <option value="others">Others</option>
+                    </select>
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Number of Trees:</span>
+    
+                    <input type="text" name="number-of-trees" value="100" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;"> &nbsp
+    
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Sampling Proportion:</span>
+    
+                    <input type="text" name="sampling-proportion" value="1.0" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;">
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">OOB Proportion:</span>
+                    <input type="text" name="oob-proportion" value="0.05" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;">
+                  </div>
+    
+                  <div class="form-item-row"><span class="form-item-label">Training Data File:</span>
+                    <input type="file" name="file_train" id="trainfile">
+                    <!-- <el-button icon="el-icon-upload2" size="mini" @click="uploadTraining">upload Training Data</el-button> -->
+                  </div>
+    
+                  <div class="form-item-row"><span class="form-item-label">Cross Validation Data File:</span>
+                    <input type="file" name="file_valid">
+                  </div>
+
+                  <input type="submit" value="Generating All Config Files" style="margin-top:10px;height:40px; width:100%; font-size:16px;background: #e4a035;border:none; color:#fff;border-radius: 3px;cursor: pointer;">
+    
+                  <input type="submit" value="Start Model Training" style="margin-top:20px;height:40px; width:100%; font-size:16px;background: #e4a035;border:none; color:#fff;border-radius: 3px;cursor: pointer;">
+    
+                </form>
+    
+              </el-form>
+            </el-tab-pane>
+            <el-tab-pane label="Prediction">
+              <el-form class="model-training-form" ref="form" :model="form" label-width="140px">
+
+                <form action="/SilasGUI/test" enctype="multipart/form-data" method="POST">
+    
+                  <!input name="hyper_parameters" type="checkbox" />
+    
+    
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Task:</span>
+                    <select name="task-mode" class="el-input__inner" style="height: 30px;line-height: 30px;">
+                      <option value="classification" selected>classification</option>
+                      <option value="regression">regression</option>
+                    </select>
+                  </div>
+    
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Tree Algorithm:</span>
+                    <select name="tree-algorithm" class="el-input__inner" style="height: 30px;line-height: 30px;">
+                      <option value="GreedyNarrow1D" selected>GreedyNarrow1D</option>
+                      <option value="others">Others</option>
+                    </select>
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Feature Proportion:</span>
+                    <select name="feature-proportion" value="SQRT" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;">
+                      <option value="sqrt" selected>sqrt</option>
+                      <option value="log">log</option>
+                      <option value="log2">log2</option>
+                      <option value="golden">golden</option>
+                    </select>
+                  </div>
+    
+    
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Maximum Tree Depth:</span>
+    
+                    <input type="text" name="max-depth" value="64" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;">
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Desired Leaf Size:</span>
+                    <input type="text" name="desired-leaf-size" value="64" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;">
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Forest Algorithm:</span>
+                    <select name="forest-algorithm" class="el-input__inner" style="height: 30px;line-height: 30px;">
+                      <option value="ClassicForest" selected>ClassicForest</option>
+                      <option value="others">Others</option>
+                    </select>
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Number of Trees:</span>
+    
+                    <input type="text" name="number-of-trees" value="100" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;"> &nbsp
+    
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Sampling Proportion:</span>
+    
+                    <input type="text" name="sampling-proportion" value="1.0" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;">
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">OOB Proportion:</span>
+                    <input type="text" name="oob-proportion" value="0.05" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;">
+                  </div>
+    
+    
+                  <div class="form-item-row"><span class="form-item-label">Testing Data File:</span>
+                    <input type="file" name="file_test">
+                  </div>
+    
+                  <input type="submit" value="Start Model Prediction" style="lsheight:40px; width:100%; font-size:16px;background: #e4a035;border:none; color:#fff;border-radius: 3px;cursor: pointer;">
+    
+                </form>
+    
+              </el-form>
+            </el-tab-pane>
+            <el-tab-pane label="Others">
+              <el-form class="model-training-form" ref="form" :model="form" label-width="140px">
+
+                <form action="/SilasGUI/train" enctype="multipart/form-data" method="POST">
+    
+                  <!input name="hyper_parameters" type="checkbox" />
+    
+    
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Task:</span>
+                    <select name="task-mode" class="el-input__inner" style="height: 30px;line-height: 30px;">
+                      <option value="classification" selected>classification</option>
+                      <option value="regression">regression</option>
+                    </select>
+                  </div>
+    
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Tree Algorithm:</span>
+                    <select name="tree-algorithm" class="el-input__inner" style="height: 30px;line-height: 30px;">
+                      <option value="GreedyNarrow1D" selected>GreedyNarrow1D</option>
+                      <option value="others">Others</option>
+                    </select>
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Feature Proportion:</span>
+                    <select name="feature-proportion" value="SQRT" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;">
+                      <option value="sqrt" selected>sqrt</option>
+                      <option value="log">log</option>
+                      <option value="log2">log2</option>
+                      <option value="golden">golden</option>
+                    </select>
+                  </div>
+    
+    
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Maximum Tree Depth:</span>
+    
+                    <input type="text" name="max-depth" value="64" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;">
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Desired Leaf Size:</span>
+                    <input type="text" name="desired-leaf-size" value="64" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;">
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Forest Algorithm:</span>
+                    <select name="forest-algorithm" class="el-input__inner" style="height: 30px;line-height: 30px;">
+                      <option value="ClassicForest" selected>ClassicForest</option>
+                      <option value="others">Others</option>
+                    </select>
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Number of Trees:</span>
+    
+                    <input type="text" name="number-of-trees" value="100" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;"> &nbsp
+    
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">Sampling Proportion:</span>
+    
+                    <input type="text" name="sampling-proportion" value="1.0" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;">
+                  </div>
+    
+                  <div class="form-item-row">
+                    <span class="form-item-label">OOB Proportion:</span>
+                    <input type="text" name="oob-proportion" value="0.05" class="el-input__inner"
+                      style="height: 30px;line-height: 30px;">
+                  </div>
+    
+                  <div class="form-item-row"><span class="form-item-label">Training Data File:</span>
+                    <input type="file" name="file_train" id="trainfile">
+                    <!-- <el-button icon="el-icon-upload2" size="mini" @click="uploadTraining">upload Training Data</el-button> -->
+                  </div>
+    
+                  <div class="form-item-row"><span class="form-item-label">Cross Validation Data File:</span>
+                    <input type="file" name="file_valid">
+                  </div>
+    
+                  <input type="submit" value="Start Model Validation" style="height:40px; width:100%; font-size:20px;background: #e4a035;border:none; color:#fff;border-radius: 3px;cursor: pointer;">
+    
+                </form>
+    
+              </el-form>
+            </el-tab-pane>
+          </el-tabs>
+       
+      
+        </el-card>
+
+      </div>
+      <div class="layout-middle">
+        <el-tabs tab-position="top" style="height: 100%; width: 100%;">
+          <el-tab-pane label="Traning Information">
+            <div class="layout-middle-content">
+              <div>
+                <div id="progressChart" style="width:400px;height:500px;"></div>
+              </div>
+              <div id="lineChart" style="width: 500px;height:500px;"></div>
+              <!-- <div id="myChart" style="width: 400px;height:400px;"></div> -->
+              <!-- <el-progress type="circle" :percentage="25" :width="200" stroke-width="30"></el-progress> -->
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="Memory & CPU">
+            <div class="memoryandcpu-wrap" style="display: flex;">
+              <div>
+                <div style="width: 100%; padding-bottom: 10px;">CPU Stats</div>
+                <div class="cpu-con">
+
+                  <div v-for="n in 12">
+                    <div id="cpuChart" class="cpuChart" style="width: 120px;height: 200px;"></div>
+                  </div>
+                </div>
+              </div>
+              <div style="width: 50%">
+                <div v-if="refreshMemoChart" id="memoChart" style="width: 600px;height: 520px;"></div>
+              </div>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="Model Insight">
+            <div style="width: 400px;height: 320px;" id="modelInsightChart"></div>
+            <div class="model-insight-panel">
+              <div class="model-ins-title" style="color: #3069ed; font-weight: 800; font-size: 20px;">Decision Logic
+              </div>
+              <div class="model-ins-content">
+                <ul>
+                  <li>soure sjdaklc alsdj</li>
+                  <li>soure sjdaklc alsdj</li>
+                  <li>soure sjdaklc alsdj</li>
+                  <li>soure sjdaklc alsdj</li>
+                </ul>
+                <ul>
+                  <li>soure sjdaklc alsdj</li>
+                  <li>soure sjdaklc alsdj</li>
+                  <li>soure sjdaklc alsdj</li>
+                  <li>soure sjdaklc alsdj</li>
+                </ul>
+                <ul>
+                  <li>soure sjdaklc alsdj</li>
+                  <li>soure sjdaklc alsdj</li>
+                  <li>soure sjdaklc alsdj</li>
+                  <li>soure sjdaklc alsdj</li>
+                </ul>
+              </div>
+            </div>
+          </el-tab-pane>
+
+          <el-tab-pane label="Model Visualisation">
+            <iframe style="width:96%;height: calc(100vh - 180px);"
+              src="http://127.0.0.1:5000/SilasGUI/silastreeview"></iframe>
+          </el-tab-pane>
+
+          <el-tab-pane label="Prediction Insight">
+            <ul>1213131
+              <li>123131231</li>
+              <li>123131231</li>
+              <li>123131231</li>
+            </ul>
+            <div id="predictionInsightChart" style="width: 700px; height: 400px;"></div>
+          </el-tab-pane>
+          <el-tab-pane label="Grid Search">
+            <el-button @click="gengridSearch">gen grid Search setting</el-button>
+            <el-button @click="gridSearch">grid Search</el-button>
+            <el-table>
+
+            </el-table>
+          </el-tab-pane>
+        </el-tabs>
+
+
+      </div>
+      <div class="layout-right" style="display: none;">
+        123
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  // window.echarts = echarts;
+  // import * as echarts from 'echarts';
+  new Vue({
+
+    el: '#app',
+    data() {
+      return {
+        form: {
+          taskMode: 'classification',
+          treeAlgorithm: 'GreedyNarrow1D',
+          featureProportion: 'sqrt',
+          maxDepth: 64,
+          desiredLeafSize: 64,
+          numberOfTrees: 100,
+          samplingProportion: 1.0,
+          oobProportion: 0.05,
+          forsetAlgorithm: 'classicForest'
+        },
+        validFileList: [],
+        trainFileList: [],
+
+
+        //cpu& memo
+        cpuMemoDataList: {
+          memo: [],
+          time:[],
+          cpu:[]
+        },
+        refreshMemoChart: true,
+
+
+        option: {
+          color: ['#80FFA5', '#00DDFF', '#37A2FF', '#FF0087', '#FFBF00'],
+          title: {
+            text: 'Gradient Stacked Area Chart',
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross',
+              label: {
+                backgroundColor: '#6a7985'
+              }
+            }
+          },
+          legend: {
+            data: ['Line 1', 'Line 2', 'Line 3', 'Line 4', 'Line 5'],
+            textStyle: {
+              fontSize: 14,
+              color: '#fff'
+            },
+
+          },
+          toolbox: {
+            feature: {
+              saveAsImage: {}
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis: [{
+            type: 'category',
+            boundaryGap: false,
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          }],
+          yAxis: [{
+            type: 'value'
+          }],
+          series: [{
+              name: 'Line 1',
+              type: 'line',
+              stack: 'Total',
+              smooth: true,
+              lineStyle: {
+                width: 0
+              },
+              showSymbol: false,
+              areaStyle: {
+                opacity: 0.8,
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgb(128, 255, 165)'
+                  },
+                  {
+                    offset: 1,
+                    color: 'rgb(1, 191, 236)'
+                  }
+                ])
+              },
+              emphasis: {
+                focus: 'series'
+              },
+              data: [140, 232, 101, 264, 90, 340, 250]
+            },
+            {
+              name: 'Line 2',
+              type: 'line',
+              stack: 'Total',
+              smooth: true,
+              lineStyle: {
+                width: 0
+              },
+              showSymbol: false,
+              areaStyle: {
+                opacity: 0.8,
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgb(0, 221, 255)'
+                  },
+                  {
+                    offset: 1,
+                    color: 'rgb(77, 119, 255)'
+                  }
+                ])
+              },
+              emphasis: {
+                focus: 'series'
+              },
+              data: [120, 282, 111, 234, 220, 340, 310]
+            },
+            {
+              name: 'Line 3',
+              type: 'line',
+              stack: 'Total',
+              smooth: true,
+              lineStyle: {
+                width: 0
+              },
+              showSymbol: false,
+              areaStyle: {
+                opacity: 0.8,
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgb(55, 162, 255)'
+                  },
+                  {
+                    offset: 1,
+                    color: 'rgb(116, 21, 219)'
+                  }
+                ])
+              },
+              emphasis: {
+                focus: 'series'
+              },
+              data: [320, 132, 201, 334, 190, 130, 220]
+            },
+            {
+              name: 'Line 4',
+              type: 'line',
+              stack: 'Total',
+              smooth: true,
+              lineStyle: {
+                width: 0
+              },
+              showSymbol: false,
+              areaStyle: {
+                opacity: 0.8,
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgb(255, 0, 135)'
+                  },
+                  {
+                    offset: 1,
+                    color: 'rgb(135, 0, 157)'
+                  }
+                ])
+              },
+              emphasis: {
+                focus: 'series'
+              },
+              data: [220, 402, 231, 134, 190, 230, 120]
+            },
+            {
+              name: 'Line 5',
+              type: 'line',
+              stack: 'Total',
+              smooth: true,
+              lineStyle: {
+                width: 0
+              },
+              showSymbol: false,
+              label: {
+                show: true,
+                position: 'top'
+              },
+              areaStyle: {
+                opacity: 0.8,
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgb(255, 191, 0)'
+                  },
+                  {
+                    offset: 1,
+                    color: 'rgb(224, 62, 76)'
+                  }
+                ])
+              },
+              emphasis: {
+                focus: 'series'
+              },
+              data: [220, 302, 181, 234, 210, 290, 150]
+            }
+          ]
+
+        },
+
+      }
+    },
+    methods: {
+      trainingfileChange(file, fileList) {
+
+        this.trainFileList = fileList
+      },
+      validfileChange(file, fileList) {
+
+        this.validFileList = fileList
+      },
+      onSubmit() {
+        let that = this
+        console.log('submit!', this.form, that.trainFileList, that.validFileList);
+
+        $.ajax({
+          dataType: 'json',
+          method: 'POST',
+          url: `${document.location.pathname}/train`,
+          data: {
+            'task-mode': that.form.taskMode,
+            'tree-algorithm': that.form.treeAlgorithm,
+            'feature-proportion': that.form.featureProportion,
+            'max-depth': that.form.maxDepth,
+            'desired-leaf-size': that.form.desiredLeafSize,
+            'forest-algorithm': that.form.forsetAlgorithm,
+            'number-of-trees': that.form.numberOfTrees,
+            'sampling-proportion': that.samplingProportion,
+            'oob-proportion': that.form.oobProportion,
+            'file_train': that.trainFileList[0],
+            'file_valid': that.validFileList[0]
+          },
+          success: function (data) {
+
+            console.log(data);
+          },
+          error: function () {
+            // btn.disabled = false;
+            that.$message({
+              showClose: true,
+              message: '错了哦，这是一条错误消息',
+              type: 'error'
+            });
+          }
+        });
+      },
+
+      handlePreview() {
+
+      },
+      handleRemove() {
+
+      },
+      beforeRemove() {
+
+      },
+      handleExceed() {
+
+      },
+      uploadTraining() {
+        const input = document.querySelector('#trainfile')
+        input.click()
+      },
+      getProgressOptions() {
+        let resData = [{
+          name: 'data1',
+          value: 80
+        }, {
+          name: 'data2',
+          value: 100
+        }, {
+          name: 'data3',
+          value: 80
+        }]
+        let name = resData.map((item) => item.name) // 获取名称
+        let value = resData.map((item) => item.value) // 获取数值
+        let sum = value.reduce((pre, cur) => pre += cur, 0) // 总和
+        let color = [ // 颜色
+          ['rgb(243,214,76)', 'rgb(237,115,80)'],
+          ['#6fc1fb', 'rgb(50,98,237)'],
+          ['rgb(235,86,131)', 'rgb(178,75,102)']
+        ]
+        let series = []
+        let yAxis = []
+        for (let i = 0; i < resData.length; i++) {
+          series.push({
+            type: 'pie',
+            clockWise: true, //顺时加载
+            hoverAnimation: false, // 鼠标移入变大
+            radius: [60 - i * 12 + '%', 53 - i * 12 + '%'], // 圆环
+            center: ['50%', '40%'],
+            itemStyle: {
+              normal: {
+                label: {
+                  show: false
+                },
+                labelLine: {
+                  show: false
+                },
+                borderWidth: 18
+              }
+            },
+            data: [{
+              name: resData[i].name,
+              value: resData[i].value,
+              itemStyle: {
+                normal: { // 渐变色
+                  color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+                    offset: 0,
+                    color: color[i][0]
+                  }, {
+                    offset: 1,
+                    color: color[i][1]
+                  }])
+                }
+              },
+            }, { // 阴影段
+              name: '',
+              value: sum - resData[i].value,
+              itemStyle: {
+                normal: {
+                  color: 'transparent'
+                }
+              },
+              tooltip: {
+                show: true
+              },
+              hoverAnimation: false // 鼠标移入变大
+            }]
+          })
+          series.push({
+            name: '',
+            type: 'pie',
+            clockWise: true, //顺时加载
+            z: 1, // 层级，默认为 2，z小的会被z大的覆盖住
+            hoverAnimation: true, // 鼠标移入变大
+            radius: [60 - i * 12 + '%', 53 - i * 12 + '%'], // 圆环
+            center: ['50%', '40%'], // position
+            label: {
+              show: false
+            },
+            itemStyle: {
+              normal: {
+                label: {
+                  show: false
+                },
+                labelLine: {
+                  show: false
+                },
+                borderWidth: 18
+              }
+            },
+            data: [{ // 阴影的75%
+              value: 7.5,
+              itemStyle: {
+                normal: {
+                  color: 'rgba(1,179,238,0.1)'
+                }
+              },
+              tooltip: {
+                show: false
+              },
+            }, { // 阴影的最后25%，透明
+              value: 2.5,
+              itemStyle: {
+                normal: {
+                  color: 'rgba(0,0,0,0)',
+                  borderWidth: 0
+                }
+              },
+              tooltip: {
+                show: false
+              },
+            }]
+          })
+          yAxis.push(resData[i].name)
+        }
+        let option = {
+          title: {
+            left: 'center',
+            text: 'Progress',
+            textStyle: {
+              // fontSize: 14,
+              color: '#fff'
+            },
+
+          },
+          legend: {
+            show: true,
+            x: 'center',
+            bottom: '15%',
+            itemGap: 20,
+            textStyle: {
+              fontSize: 14,
+              color: '#fff'
+            },
+            data: name,
+          },
+          grid: {
+            top: '13%',
+            left: '48%',
+            width: '40%',
+            height: '20%',
+            containlabel: false
+          },
+          xAxis: [{ // x轴隐藏
+            show: false
+          }],
+          yAxis: [{ // y轴配置
+            type: 'category',
+            asisLine: {
+              show: true
+            },
+            axisTick: {
+              show: false
+            },
+            axisLabel: {
+              show: true,
+              interval: 0,
+              textStyle: {
+                color: '#fff',
+                fontSize: 14
+              }
+            },
+            data: yAxis
+          }],
+          series: series
+        }
+
+        return option
+
+      },
+      getLineOptions() {
+        let base = +new Date(1968, 9, 3);
+        let oneDay = 24 * 3600 * 1000;
+        let date = [];
+        let data = [Math.random() * 300];
+        for (let i = 1; i < 20000; i++) {
+          var now = new Date((base += oneDay));
+          date.push([now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'));
+          data.push(Math.round((Math.random() - 0.5) * 20 + data[i - 1]));
+        }
+        option = {
+          tooltip: {
+            trigger: 'axis',
+            position: function (pt) {
+              return [pt[0], '10%'];
+            }
+          },
+          title: {
+            left: 'center',
+            text: 'Large Area Chart',
+            textStyle: {
+              // fontSize: 14,
+              color: '#fff'
+            },
+
+          },
+          // toolbox: {
+          //   feature: {
+          //     dataZoom: {
+          //       yAxisIndex: 'none'
+          //     },
+          //     restore: {},
+          //     saveAsImage: {},
+
+          //   },
+          //   textStyle: {
+          //     fontSize: 14,
+          //     color: '#fff'
+          //   },
+          // },
+          xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: date,
+            // axisLabel: {
+            //   show: true,
+            //   interval: 0,
+            //   textStyle: {
+            //     color: '#fff',
+            //     fontSize: 14
+            //   }
+            // },
+          },
+          yAxis: {
+            type: 'value',
+            boundaryGap: [0, '100%'],
+            axisLabel: {
+              show: true,
+              interval: 0,
+              textStyle: {
+                color: '#ccc',
+                fontSize: 12
+              }
+            },
+          },
+          dataZoom: [{
+              type: 'inside',
+              start: 0,
+              end: 10
+            },
+            {
+              start: 0,
+              end: 10
+            }
+          ],
+          series: [{
+            name: 'Memo',
+            type: 'line',
+            symbol: 'none',
+            sampling: 'lttb',
+            itemStyle: {
+              color: 'rgb(255, 70, 131)'
+            },
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                  offset: 0,
+                  color: 'rgb(255, 158, 68)'
+                },
+                {
+                  offset: 1,
+                  color: 'rgb(255, 70, 131)'
+                }
+              ])
+            },
+            data: data
+          }]
+        }
+        return option
+      },
+      getCpuOption(chartIndex) {
+        let base = +new Date(2016, 9, 3);
+        let oneDay = 24 * 3600 * 1000;
+        let valueBase = Math.random() * 300;
+        let valueBase2 = Math.random() * 50;
+        let data = [];
+        let data2 = [];
+        for (var i = 1; i < 10; i++) {
+          var now = new Date((base += oneDay));
+          var dayStr = [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('-');
+          valueBase = Math.round((Math.random() - 0.5) * 20 + valueBase);
+          valueBase <= 0 && (valueBase = Math.random() * 300);
+          data.push([dayStr, valueBase]);
+          valueBase2 = Math.round((Math.random() - 0.5) * 20 + valueBase2);
+          valueBase2 <= 0 && (valueBase2 = Math.random() * 50);
+          data2.push([dayStr, valueBase2]);
+        }
+        option = {
+          title: {
+            bottom: '0px',
+            // left: 'center',
+            text: `core${chartIndex}`,
+            textStyle: {
+              color: '#ccc',
+              fontSize: '12px'
+            }
+          },
+          legend: {
+            top: 'bottom',
+            data: ['Intention']
+          },
+          tooltip: {
+            triggerOn: 'none',
+            position: function (pt) {
+              return [pt[0], 130];
+            }
+          },
+          // toolbox: {
+          //   left: 'center',
+          //   itemSize: 25,
+          //   top: 55,
+          //   feature: {
+          //     dataZoom: {
+          //       yAxisIndex: 'none'
+          //     },
+          //     restore: {}
+          //   }
+          // },
+          xAxis: {
+            type: 'time',
+            axisPointer: {
+              value: '2016-10-7',
+              snap: true,
+              lineStyle: {
+                color: 'rgb(225,86,123)',
+                width: 2
+              },
+              label: {
+                show: false,
+                formatter: function (params) {
+
+                  return `core${chartIndex}`;
+                },
+                backgroundColor: 'rgba(0,0,0,0.8)'
+              },
+              handle: {
+                show: true,
+                color: 'rgb(225,86,123)'
+              }
+            },
+            splitLine: {
+              show: false
+            }
+          },
+          yAxis: {
+            type: 'value',
+            axisTick: {
+              inside: true
+            },
+            splitLine: {
+              show: false
+            },
+            axisLabel: {
+              show: false,
+              inside: true,
+              formatter: '{value}\n',
+              color: '#ccc',
+              fontSize: '10px'
+            },
+            textStyle: {
+              color: '#ffff'
+            },
+            z: 10
+          },
+          grid: {
+            top: 110,
+            left: 15,
+            right: 15,
+            height: 160
+          },
+          dataZoom: [{
+            type: 'inside',
+            throttle: 50
+          }],
+          series: [{
+              name: 'Fake Data',
+              type: 'line',
+              smooth: true,
+              symbol: 'circle',
+              symbolSize: 5,
+              sampling: 'average',
+              itemStyle: {
+                color: 'rgb(50,98,237)'
+              },
+              stack: 'a',
+              areaStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgba(58,77,233,0.8)'
+                  },
+                  {
+                    offset: 1,
+                    color: 'rgba(58,77,233,0.3)'
+                  }
+                ])
+              },
+              data: data
+            },
+            {
+              name: 'Fake Data',
+              type: 'line',
+              smooth: true,
+              stack: 'a',
+              symbol: 'circle',
+              symbolSize: 5,
+              sampling: 'average',
+              itemStyle: {
+                color: '#F2597F'
+              },
+              areaStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgba(213,72,120,0.8)'
+                  },
+                  {
+                    offset: 1,
+                    color: 'rgba(213,72,120,0.3)'
+                  }
+                ])
+              },
+              data: data2
+            }
+          ]
+        };
+        return option
+      },
+      getMemoryOption() {
+        let that = this
+
+        option = {
+          title: {
+            text: 'Memory',
+            subtext: 'memo',
+            textStyle: {
+              color: "#fff"
+            }
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross'
+            }
+          },
+          toolbox: {
+            show: true,
+            feature: {
+              saveAsImage: {}
+            }
+          },
+          xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            // prettier-ignore
+            data: that.cpuMemoDataList.time,
+            axisLabel: {
+              textStyle: {
+                color: "#ccc"
+              }
+            },
+          },
+          yAxis: {
+            type: 'value',
+            axisLabel: {
+              formatter: '{value} %',
+              textStyle: {
+                color: "#ccc"
+              }
+            },
+            axisPointer: {
+              snap: true
+            },
+
+          },
+          visualMap: {
+            show: false,
+            dimension: 0,
+            pieces: [{
+                lte: 6,
+                color: 'rgb(225,86,123)'
+              },
+              {
+                gt: 6,
+                lte: 8,
+                color: 'rgb(50,98,237)'
+              },
+              {
+                gt: 8,
+                lte: 12,
+                color: 'rgb(225,86,123)'
+              },
+              {
+                gt: 12,
+                lte: 16,
+                color: 'rgb(50,98,237)'
+              },
+              {
+                gt: 30,
+                color: 'rgb(225,86,123)'
+              }
+            ]
+          },
+          series: [{
+            name: 'Cpu',
+            type: 'line',
+            smooth: true,
+            // prettier-ignore
+            data: that.cpuMemoDataList.memo,
+            markArea: {
+              itemStyle: {
+                color: 'rgba(215,167,183, 0.2)'
+              },
+              data: [
+                [{
+                    name: '',
+                    yAxis: '100'
+                  },
+                  {
+                    yAxis: '25'
+                  }
+                ],
+                // [{
+                //     name: '',
+                //     xAxis: '17:30'
+                //   },
+                //   {
+                //     xAxis: '21:15'
+                //   }
+                // ]
+              ]
+            }
+          }]
+        };
+        return option
+      },
+      getModelInsightOption() {
+        let option = {
+          // backgroundColor: '#2c343c',
+          title: {
+            text: 'Customized Pie',
+            left: 'center',
+            top: 20,
+            textStyle: {
+              color: '#ccc'
+            }
+          },
+          tooltip: {
+            trigger: 'item'
+          },
+          visualMap: {
+            show: false,
+            min: 80,
+            max: 600,
+            inRange: {
+              colorLightness: [0, 1]
+            }
+          },
+          series: [{
+            name: 'Access From',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '50%'],
+            data: [{
+                value: 335,
+                name: 'Direct'
+              },
+              {
+                value: 310,
+                name: 'Email'
+              },
+              {
+                value: 274,
+                name: 'Union Ads'
+              },
+              {
+                value: 235,
+                name: 'Video Ads'
+              },
+              {
+                value: 400,
+                name: 'Search Engine'
+              },
+            ].sort(function (a, b) {
+              return a.value - b.value;
+            }),
+            roseType: 'radius',
+            label: {
+              color: 'rgba(255, 255, 255, 0.3)'
+            },
+            labelLine: {
+              lineStyle: {
+                color: 'rgba(255, 255, 255, 0.3)'
+              },
+              smooth: 0.2,
+              length: 10,
+              length2: 20
+            },
+            itemStyle: {
+              color: '#f4a317',
+              shadowBlur: 200,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            },
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function (idx) {
+              return Math.random() * 200;
+            }
+          }]
+        };
+        return option
+      },
+      getPredictionInsightOption() {
+        const labelRight = {
+          position: 'right'
+        };
+        let option = {
+          title: {
+            text: 'Important Mean Deviation',
+            textStyle: {
+              color: '#ccc'
+            }
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
+            }
+          },
+          grid: {
+            top: 80,
+            bottom: 30
+          },
+          xAxis: {
+            type: 'value',
+            position: 'top',
+            splitLine: {
+              lineStyle: {
+                type: 'dashed'
+              }
+            },
+            axisLabel: {
+              textStyle: {
+                color: '#ccc'
+              }
+            }
+
+          },
+          yAxis: {
+            type: 'category',
+            axisLine: {
+              show: false
+            },
+            axisLabel: {
+              // show: false
+              textStyle: {
+                color: '#ccc'
+              }
+            },
+            axisTick: {
+              show: false
+            },
+            splitLine: {
+              show: false
+            },
+            data: [
+              'ten',
+              'nine',
+              'eight',
+              'seven',
+              'six',
+              'five',
+              'four',
+              'three',
+              'two',
+              'one'
+            ]
+          },
+          series: [{
+            name: 'Cost',
+            type: 'bar',
+            stack: 'Total',
+            label: {
+              show: true,
+              formatter: '{b}'
+            },
+            itemStyle: {
+              normal: {
+                color: function (params) {
+                  var index_color = params.value;
+                  if (index_color > 0) {
+                    return 'rgb(50,98,237)' // blue
+                  } else {
+                    return 'rgb(225,86,123)' // pink
+                  }
+                }
+              }
+
+            },
+            data: [{
+                value: -0.07,
+                label: labelRight
+              },
+              {
+                value: -0.09,
+                label: labelRight
+              },
+              0.2,
+              0.44,
+              {
+                value: -0.23,
+                label: labelRight
+              },
+              0.08,
+              {
+                value: -0.17,
+                label: labelRight
+              },
+              0.47,
+              {
+                value: -0.36,
+                label: labelRight
+              },
+              0.18
+            ]
+          }]
+        };
+
+        return option
+
+      },
+      drawLine() {
+
+        let myLineChart = echarts.init(document.getElementById("lineChart"))
+        let lineOptions = this.getLineOptions()
+        myLineChart.setOption(lineOptions)
+
+        // let myChart = echarts.init(document.getElementById("myChart"))
+        // // 绘制图表
+        // myChart.setOption(this.option)
+      },
+      drawProgress() {
+        let progressChart = echarts.init(document.getElementById('progressChart'))
+        let option = this.getProgressOptions()
+        progressChart.setOption(option)
+      },
+      drawCpuChart() {
+        let domArr = document.getElementsByClassName('cpuChart')
+        for (let i = 0; i < domArr.length; i++) {
+          let cpuChart = echarts.init(domArr[i])
+          let option = this.getCpuOption(i + 1)
+          cpuChart.setOption(option)
+        }
+
+      },
+      drawMemoryLine() {
+        let memoChart = echarts.init(document.getElementById('memoChart'))
+        let option = this.getMemoryOption()
+        memoChart.setOption(option)
+      },
+      draModelInsightChart() {
+        let modelInsightChart = echarts.init(document.getElementById('modelInsightChart'))
+        let option = this.getModelInsightOption()
+        modelInsightChart.setOption(option)
+      },
+      drawPredictionInsightChart() {
+        let predictionInsightChart = echarts.init(document.getElementById('predictionInsightChart'))
+        let option = this.getPredictionInsightOption()
+        predictionInsightChart.setOption(option)
+      },
+      gengridSearch(){
+        $.ajax({
+        method: 'GET',
+        url: `${document.location.pathname}/gengridSearch`,
+        success: function (result) {
+          console.log('rrre', result)
+        }
+      });
+      },
+      gridSearch(){
+        $.ajax({
+        method: 'GET',
+        url: `${document.location.pathname}/gridSearch`,
+        success: function (result) {
+          console.log('rrre', result)
+        }
+      });
+      }
+    },
+    mounted() {
+      this.drawLine();
+      this.drawProgress()
+      this.drawCpuChart()
+      this.drawMemoryLine()
+      this.draModelInsightChart()
+      this.drawPredictionInsightChart()
+      $.ajax({
+        method: 'GET',
+        url: `${document.location.pathname}/getRes`,
+        success: function (result) {
+          console.log('rrre', result)
+        }
+      });
+
+      let that = this
+      this.$nextTick(() => {
+
+      })
+
+
+
+      setInterval(() => {
+        $.ajax({
+          method: 'GET',
+          url: `${document.location.pathname}/getCpuMemo`,
+          success: function (result) {
+            // that.CPUCount = result.cpunum
+            // that.cpuMemoDataList.push(result)
+            if(that.cpuMemoDataList.time.length > 15){
+              that.cpuMemoDataList.time.shift()
+              that.cpuMemoDataList.cpu.shift()
+              that.cpuMemoDataList.memo.shift()
+            }
+            
+            that.cpuMemoDataList.time.push(result.time)
+            that.cpuMemoDataList.cpu.push(result.cpu)
+            that.cpuMemoDataList.memo.push(result.memo)
+            // console.log('31214',that.cpuMemoDataList)
+            // that.refreshMemoChart = false
+            // setTimeout(() => {
+            //   that.refreshMemoChart = true
+            // })
+            that.drawMemoryLine()
+            // console.log('jjj', that.cpuMemoDataList)
+            // console.log('rrre',result)
+            // let data = JSON.parse(window.sessionStorage.getItem("cpuAndMemo"))
+            // if(!data){
+            //   data = []
+            // }
+            // data.push(result)
+
+            // window.sessionStorage.setItem("cpuAndMemo", JSON.stringify(data));
+            // console.log('daa',data)
+            // data.push(result)
+          }
+        })
+      }, 3000)
+
+
+
+    }
+    // data: function () {
+    //     return { visible: false }
+    // }
+  })
+</script>
+
+</html>
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  #app {
+    background-color: rgb(39, 41, 44);
+    color: #fff;
+    font-family: -apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+  }
+
+  header {
+    box-shadow: 1px 1px 10px #000000;
+  }
+
+  header:hover {
+    box-shadow: 1px 1px 20px #000000;
+  }
+
+  #app .content {
+    height: calc(100vh - 60px);
+    display: flex;
+    min-width: 900px;
+  }
+
+  #app .content .layout-left {
+    width: 280px;
+    padding: 30px 20px;
+    min-width: 300px;
+  }
+
+  #app .content .layout-middle {
+    width: 70%;
+    padding: 30px 20px;
+  }
+
+  #app .content .layout-right {
+    width: 30%;
+    padding: 20px;
+  }
+
+  .model-training-form {
+    margin-top: 20px;
+  }
+
+  .el-form-item__label {
+    color: #fff;
+  }
+
+  .el-input__inner,
+  .el-select-dropdown__list,
+  .el-select-dropdown__item {
+    background-color: rgb(40, 40, 40);
+    color: #fff;
+  }
+
+  .el-select-dropdown__item.hover,
+  .el-select-dropdown__item:hover {
+    background-color: #000;
+  }
+
+  .el-select .el-input__inner:focus,
+  .el-range-editor.is-active,
+  .el-range-editor.is-active:hover,
+  .el-select .el-input.is-focus .el-input__inner,
+  .el-input__inner:focus {
+    border-color: #e4a035;
+  }
+
+  .el-select-dropdown__item.selected {
+    color: #e4a035;
+  }
+
+  .el-button--primary {
+    background-color: #e4a035;
+    border-color: #e4a035;
+  }
+
+  .el-button--primary:hover {
+    background-color: #eebd6e;
+    border-color: #f5cc8b;
+  }
+
+  .layout-middle-content {
+    margin-top: 20px;
+    display: flex;
+    height: calc(100vh - 190px);
+  }
+
+  .title {
+    font-weight: 800;
+  }
+
+  .form-item-row {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .form-item-label {
+    display: inline-block;
+    width: 120px;
+  }
+
+  #trainfile {
+    /* display: none; */
+  }
+
+  .el-form-item {
+    margin-bottom: 10px;
+  }
+
+  .el-form-item__label {
+    line-height: 30px;
+    font-size: 12px;
+    text-align: left;
+  }
+
+  .el-card:hover {
+    box-shadow: 1px 1px 20px #1a1a1a;
+  }
+
+  .el-select {
+    width: 100%;
+  }
+
+  /*tabs*/
+  .el-tabs__item {
+    color: #fff;
+  }
+
+  .el-tabs__item:hover {
+    color: #e4a035;
+  }
+
+  .el-tabs__item.is-active {
+    color: #e4a035;
+  }
+
+  .el-tabs__active-bar {
+    background-color: #e4a035;
+    /* width: 25%; */
+    /* left: 5%; */
+    /* transform: translateX(200px); */
+  }
+
+  .el-tabs__nav {
+    /* width: 94%;
+    display: flex;
+    justify-content: space-around; */
+  }
+
+  .cpu-con {
+    display: grid;
+    border-top: 1px solid #fff;
+    margin-top: -80px;
+    grid-template-columns: 120px 120px 120px;
+    grid-template-rows: 110px 110px 110px;
+  }
+
+  .model-insight-panel {
+    width: 80%;
+    height: calc(100vh - 550px);
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+
+  .model-insight-panel .model-ins-title {
+    font-weight: 800;
+    text-align: center;
+  }
+
+  .model-insight-panel .model-ins-content {
+    display: flex;
+    width: 95%;
+    justify-content: space-between;
+  }
+
+  .el-upload-list__item {
+    font-size: 12px;
+    max-width: 170px;
+    overflow: hidden;
+  }
+</style>

@@ -1,0 +1,29 @@
+{
+    "$id": "https://www.depintel.com/mn/json_schemata/cmd-status-response-schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Command Status Response",
+    "type": "object",
+    "oneOf": [
+        {
+            "required": [ "command", "status", "data" ],
+            "properties": {
+                "command": { "enum": [ "status" ] },
+                "status": { "enum": [ "succeeded" ] },
+                "data": {
+                    "type": "object",
+                    "required": [ "status" ],
+                    "properties": {
+                        "status": { "enum": [ "OK", "NOK" ] }
+                    }
+                }
+            }
+        },
+        {
+            "required": [ "command", "status" ],
+            "properties": {
+                "command": { "enum": [ "status" ] },
+                "status": { "enum": [ "failed" ] }
+            }
+        }
+    ]
+}

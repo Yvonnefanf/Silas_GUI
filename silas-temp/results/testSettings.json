@@ -1,0 +1,34 @@
+{
+    "metadata-file": "metadata.json",
+    "output-feature": "target",
+    "ignored-features": [],
+    "learner-settings": {
+        "mode": "classification",
+        "reduction-strategy": "none",
+        "grower-settings": {
+            "forest-settings": {
+                "type": "SimpleForest",
+                "number-of-trees": 500,
+                "sampling-proportion": 1.0,
+                "oob-proportion": 0.10000000149011612
+            },
+            "tree-settings": {
+                "type": "RdGreedy1D",
+                "max-depth": 64,
+                "desired-leaf-size": 64,
+                "feature-proportion": "sqrt"
+            }
+        }
+    },
+    "training-dataset": {
+        "type": "CSV",
+        "path": "../uploads/train.csv"
+    },
+    "validation-settings": {
+        "type": "TT",
+        "testing-dataset": {
+            "type": "CSV",
+            "path": "../uploads/test.csv"
+        }
+    }
+}

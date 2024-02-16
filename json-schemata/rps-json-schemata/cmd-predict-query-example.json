@@ -1,0 +1,28 @@
+{
+    "command": "predict",
+    "data": {
+        "patient_id": "blablablablablabla",
+        "patient_data": {
+            "administrative_data": { 
+                "admit_data": {
+                    "Admit_Date": "11/04/2015"
+                },  
+                "discharge_data": {
+                    "Discharge_Division": "YEP",
+                    "LOS": 4
+                },
+                "personal_data": {
+                    "Sex": "Male"
+                }                
+            },
+            "diagnostic_data": {
+                "codes": {
+                    "DRG": "ABDC",
+                    "Dementia": 1,
+                    "Inlier_Weight": 1.6
+                } 
+            }            
+        },
+        "targets": [ "COMP_Delirium_Flag", "COMP_LOS" ]
+    }
+}

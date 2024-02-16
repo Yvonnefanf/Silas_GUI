@@ -1,0 +1,37 @@
+{
+  "desired-leaf-size": [
+    1,
+    64
+  ],
+  "feature-proportion": [
+    "sqrt"
+  ],
+  "forest-type": [
+    "SimpleForest"
+  ],
+  "max-depth": [
+    5,
+    64
+  ],
+  "mode": "classification",
+  "number-of-trees": [
+    100,
+    500
+  ],
+  "oob-proportion": [
+    0.05,
+    0.1
+  ],
+  "reduction-strategy": [
+    "none",
+    "one-vs-rest",
+    "one-vs-one"
+  ],
+  "sampling-proportion": [
+    0.8,
+    1
+  ],
+  "tree-type": [
+    "RdGreedy1D"
+  ]
+}

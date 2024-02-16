@@ -1,0 +1,725 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+  <!-- <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+  
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+  <script src="https://www.runoob.com/static/js/wonderland.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  
+   -->
+     <!-- <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script> -->
+  <script src="{{ url_for('static', filename='js/echarts.min.js') }}"></script>
+
+  <script src="{{ url_for('static', filename='js/vue.min.js') }}"></script>
+  <!-- <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script> -->
+  <!-- <script src="{{ url_for('static', filename='js/ace.js') }}"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+
+  <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+  <!-- <script src="./eleui.js"></script> -->
+  <script src="{{ url_for('static', filename='js/eleui.js') }}"></script>
+  <!-- <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script> -->
+  <!-- <script src="https://www.runoob.com/static/js/wonderland.js"></script> -->
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+  <script src="{{ url_for('static', filename='js/d3.v5.min.js') }}"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- <el-header style="line-height: 30px; display: flex;align-items: center;">
+      <img height="30px"
+        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAoCAYAAAC8cqlMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAGrWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDIgNzkuMTYwOTI0LCAyMDE3LzA3LzEzLTAxOjA2OjM5ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAxOC0wNy0xOVQxOTowMCsxMDowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAxOS0wMS0wNlQxNToxOTowNysxMDowMCIgeG1wOk1vZGlmeURhdGU9IjIwMTktMDEtMDZUMTU6MTk6MDcrMTA6MDAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODNmM2QyMTQtMmJhMC0zMjRhLWI3OTEtMDAzMDhhZTBmNDNmIiB4bXBNTTpEb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6Y2JkNmFmODgtMTNiNy1kZjQ3LWFjYTktYTA1NmRkYWFmZGMyIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6ZmM4ODU4MjctOGE5NC0xNzQ5LWIxMGMtMDMwNTFmMWQzZjAxIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyIgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIgcGhvdG9zaG9wOklDQ1Byb2ZpbGU9InNSR0IgSUVDNjE5NjYtMi4xIj4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpmYzg4NTgyNy04YTk0LTE3NDktYjEwYy0wMzA1MWYxZDNmMDEiIHN0RXZ0OndoZW49IjIwMTgtMDctMTlUMTk6MDArMTA6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAoV2luZG93cykiLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOmMwOGMxOGJhLTA2MjgtN2U0OS1iMzkwLTMwOGRmMDhkYmY0NSIgc3RFdnQ6d2hlbj0iMjAxOC0wNy0xOVQxOTowMCsxMDowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6ODNmM2QyMTQtMmJhMC0zMjRhLWI3OTEtMDAzMDhhZTBmNDNmIiBzdEV2dDp3aGVuPSIyMDE5LTAxLTA2VDE1OjE5OjA3KzEwOjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PkOhW6IAAAJtSURBVFjD3dhLiI1RHADws5BCihQLJXkTFiLDNFKGsrBWygILG8LIIxtWMiGSZxJ5JMnOQhYeE6KI8shk5ZnXCOOV5GfhTL7G7c6933yf7ufUt7n3/M///M7533vOvQGPMQehoM9itAZ8wKICQzbhWcBzbCgwZC8eBLRiZ4Ehp3E94CZOFBhyCWcDzsenqJA7OBxwPO5KUSGP0BywAw9TDNCAoRlOaAympYh7gaaA9XiaYoBruJLxyp5OEfcOC0I8Q96mGGARfqB3BoihfrfGKuP6x3NwVsBcvEffKgfpiW/xZM3iUGtLETcCnzAhYEhcjZ84gvoqBrqAlgwgD3Gsiv6zcSrOux29k7J9eONPu4qlXezUwrgrvbpZVj8xs0yfAViFW4n5vcA2DEYoFdQPy3EjEfQEuzCxU98e+NzN8tqI1yVen4qDeBnn8AOXsQR9OvevJNEMHE3s1hecw/z4/sl4uqaF3MXWxE32Er4nVv0ApnQ1TrVJB2EtbsdEbbFG32BgCsRYfI3fmu1x1a9jWayMisfq7od0HnbjY4RdiefS+DIxk2M53Ywxr2KtN3ZnLlkdZjv83Z5gTyzNRhxK1HuyrctiDllBZkrfxtUSpOOKUW27mlX+LCHbU0DW1iJkRgrI2FqEdPxsrrRleXPOHFJNea2pZUhDFZDRtQzpuMl21VqyzpsHZGsFkNVFgNRXABlVBEjAgzKIy3nkzAvSXAbSVCTI9DKQkUWCBNwvgbiYV748IVtKQFYWETKtBGR4ESEB9xKIC3nmyhuyOQFZUWRIXQIyrMiQEP8leZR3nn8BOYP9/wOkDpPyzvMLDphwAHNEbf0AAAAASUVORK5CYII=">
+      <span style="font-weight: 800; display: inline-block; margin-left: 20px;"><span style="color:#e4a035">Silas</span>
+        Pro</span>
+    </el-header> -->
+    <div class="content" v-loading="isLoading" element-loading-text="loading..." element-loading-background="rgba(0, 0, 0, 0.8)">
+      <el-menu default-active="Home" class="el-menu-vertical-demo" background-color="rgb(59, 65, 79, 0.5)"
+        text-color="#909399" :router="true" active-text-color="#ffd04b">
+        <div style="padding-top:20px;">
+          <img height="30px"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAoCAYAAAC8cqlMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAGrWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDIgNzkuMTYwOTI0LCAyMDE3LzA3LzEzLTAxOjA2OjM5ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAxOC0wNy0xOVQxOTowMCsxMDowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAxOS0wMS0wNlQxNToxOTowNysxMDowMCIgeG1wOk1vZGlmeURhdGU9IjIwMTktMDEtMDZUMTU6MTk6MDcrMTA6MDAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODNmM2QyMTQtMmJhMC0zMjRhLWI3OTEtMDAzMDhhZTBmNDNmIiB4bXBNTTpEb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6Y2JkNmFmODgtMTNiNy1kZjQ3LWFjYTktYTA1NmRkYWFmZGMyIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6ZmM4ODU4MjctOGE5NC0xNzQ5LWIxMGMtMDMwNTFmMWQzZjAxIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyIgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIgcGhvdG9zaG9wOklDQ1Byb2ZpbGU9InNSR0IgSUVDNjE5NjYtMi4xIj4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpmYzg4NTgyNy04YTk0LTE3NDktYjEwYy0wMzA1MWYxZDNmMDEiIHN0RXZ0OndoZW49IjIwMTgtMDctMTlUMTk6MDArMTA6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAoV2luZG93cykiLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOmMwOGMxOGJhLTA2MjgtN2U0OS1iMzkwLTMwOGRmMDhkYmY0NSIgc3RFdnQ6d2hlbj0iMjAxOC0wNy0xOVQxOTowMCsxMDowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6ODNmM2QyMTQtMmJhMC0zMjRhLWI3OTEtMDAzMDhhZTBmNDNmIiBzdEV2dDp3aGVuPSIyMDE5LTAxLTA2VDE1OjE5OjA3KzEwOjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PkOhW6IAAAJtSURBVFjD3dhLiI1RHADws5BCihQLJXkTFiLDNFKGsrBWygILG8LIIxtWMiGSZxJ5JMnOQhYeE6KI8shk5ZnXCOOV5GfhTL7G7c6933yf7ufUt7n3/M///M7533vOvQGPMQehoM9itAZ8wKICQzbhWcBzbCgwZC8eBLRiZ4Ehp3E94CZOFBhyCWcDzsenqJA7OBxwPO5KUSGP0BywAw9TDNCAoRlOaAympYh7gaaA9XiaYoBruJLxyp5OEfcOC0I8Q96mGGARfqB3BoihfrfGKuP6x3NwVsBcvEffKgfpiW/xZM3iUGtLETcCnzAhYEhcjZ84gvoqBrqAlgwgD3Gsiv6zcSrOux29k7J9eONPu4qlXezUwrgrvbpZVj8xs0yfAViFW4n5vcA2DEYoFdQPy3EjEfQEuzCxU98e+NzN8tqI1yVen4qDeBnn8AOXsQR9OvevJNEMHE3s1hecw/z4/sl4uqaF3MXWxE32Er4nVv0ApnQ1TrVJB2EtbsdEbbFG32BgCsRYfI3fmu1x1a9jWayMisfq7od0HnbjY4RdiefS+DIxk2M53Ywxr2KtN3ZnLlkdZjv83Z5gTyzNRhxK1HuyrctiDllBZkrfxtUSpOOKUW27mlX+LCHbU0DW1iJkRgrI2FqEdPxsrrRleXPOHFJNea2pZUhDFZDRtQzpuMl21VqyzpsHZGsFkNVFgNRXABlVBEjAgzKIy3nkzAvSXAbSVCTI9DKQkUWCBNwvgbiYV748IVtKQFYWETKtBGR4ESEB9xKIC3nmyhuyOQFZUWRIXQIyrMiQEP8leZR3nn8BOYP9/wOkDpPyzvMLDphwAHNEbf0AAAAASUVORK5CYII=">
+          <div>
+            <span style="font-weight: 800; display: inline-block; margin-left: 10px;"><span
+                style="color:#e4a035">Silas</span>
+              Pro</span>
+          </div>
+        </div>
+        <el-divider></el-divider>
+        <el-menu-item index="Home">
+          <i class="el-icon-s-home"></i>
+          <span slot="title">Home</span>
+        </el-menu-item>
+        <el-menu-item index="train" @click="goPage('trainPage')">
+          <i class="el-icon-document-copy"></i>
+          <span slot="title">Training</span>
+        </el-menu-item>
+        <el-menu-item index="test" @click="goPage('testPage')">
+          <i class="el-icon-reading"></i>
+          <span slot="title">Cross Validation</span>
+        </el-menu-item>
+        <el-menu-item index="pred">
+          <i class="el-icon-view"></i>
+          <span slot="title">Prediction</span>
+        </el-menu-item>
+        <el-menu-item index="grid" @click="goPage('gridSearchPage')">
+          <i class="el-icon-search"></i>
+          <span slot="title">GridSearch</span>
+        </el-menu-item>
+        <el-menu-item index="extension" @click="goPage('extensionPage')">
+          <i class="el-icon-setting"></i>
+          <span slot="title">Model Explanation</span>
+        </el-menu-item>
+        <el-menu-item index="extension" @click="goPage('extensionPage')">
+          <i class="el-icon-takeaway-box"></i>
+          <span slot="title">Feature importance</span>
+        </el-menu-item>
+      </el-menu>
+      <div class="page-content">
+        <div style="flex:1">
+          <h3>Stastistic Dashboard</h3>
+          <!-- <el-divider></el-divider> -->
+          <div style="display: flex; margin:10px 5px; justify-content: space-around; margin-bottom: 20px;">
+            <el-card class="statistic-card" style="margin-left: 0;">
+              <div class="icon-container" style="background-color: rgb(241 74 123);">
+                <el-icon style="font-size: 30px; color:#fff;margin-top: 10px;" class="el-icon-document-copy"></el-icon>
+              </div><span style="font-size: 12px;">Finished Trainings</span><br /> <span
+                style="font-size: 20px; font-weight: 800;" v-html="finishedTrainings"></span>
+            </el-card>
+            <el-card class="statistic-card">
+              <div class="icon-container" style="background-color: rgb(93 184 93);">
+                <el-icon style="font-size: 30px; color:#fff;margin-top: 10px;" class="el-icon-search"></el-icon>
+              </div><span style="font-size: 12px;">Grid Search Models</span><br /> <span
+                style="font-size: 20px;font-weight: 800;" v-html="gridSearchModels"></span>
+            </el-card>
+            <el-card class="statistic-card">
+              <div class="icon-container" style="background-color: rgb(62 97 229);">
+                <el-icon style="font-size: 30px; color:#fff;margin-top: 10px;" class="el-icon-chat-line-round">
+                </el-icon>
+              </div><span style="font-size: 12px;">Explanations</span><br /> <span
+                style="font-size: 20px;font-weight: 800;" v-html="explanations"></span>
+            </el-card>
+            <!-- <el-card style="flex:1;margin-left : 20px; color:#fff; background-color: rgb(255 104 69 / 100%); border-color: rgb(255 104 69 / 100%); text-align: center;line-height: 30px; padding-top: 10px;" >EX accuracy<br/> <span style="font-size: 30px;font-weight: 800;">768</span></el-card> -->
+          </div>
+          <el-divider style="background:rgb(111, 109, 109);"></el-divider>
+
+        </div>
+        <div style="flex:1;">
+          <h3>Device Stats Monitor</h3>
+
+          <div class="memoryandcpu-wrap" style="display: flex; margin-top:20px;">
+            <!-- <div style="flex:1; background-color: rgba(59,65,79,0.3); padding:20px;">
+              <div style="width: 100%; padding-bottom: 10px; font-weight: 800;">CPU Stats</div>
+              <div class="cpu-con">
+
+                <div v-for="n in 12">
+                  <div id="cpuChart" class="cpuChart" style="width: 120px;height: 200px;"></div>
+                </div>
+              </div>
+            </div> -->
+            <div style="flex:1; margin-left: 20px; background-color: rgba(59,65,79,0.3); padding:20px;">
+              <div style="display: flex; align-items: center; margin-bottom: 20px;"><span style="display: inline-block; width: 200px;">Search Dir Path: </span><el-input v-model="searchDiskPath"></el-input><el-button style="margin-left: 20px;" @click="drawPieChart">Search</el-button></div>
+              <div style="width: 90%;height: 500px;" id="pieChart"></div>
+            </div>
+            <div style="flex:1; margin-left: 20px; background-color: rgba(59,65,79,0.3); padding:20px;">
+              <div v-if="refreshMemoChart" id="memoChart" style="width: 80%;height: 520px;"></div>
+            </div>
+
+          </div>
+        </div>
+
+
+
+        <div class="footer" style="flex:1">
+          <el-card
+            style="margin-top: 20px; background-color: rgba(59, 65, 79,0.1); border-color: rgba(59, 65, 79, 0.1); color:#fff; height: 100%;text-align: center;">
+            <img height="28px"
+            style="margin-right: 10px; margin-top: 10px;"
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAoCAYAAAC8cqlMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAGrWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDIgNzkuMTYwOTI0LCAyMDE3LzA3LzEzLTAxOjA2OjM5ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAxOC0wNy0xOVQxOTowMCsxMDowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAxOS0wMS0wNlQxNToxOTowNysxMDowMCIgeG1wOk1vZGlmeURhdGU9IjIwMTktMDEtMDZUMTU6MTk6MDcrMTA6MDAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODNmM2QyMTQtMmJhMC0zMjRhLWI3OTEtMDAzMDhhZTBmNDNmIiB4bXBNTTpEb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6Y2JkNmFmODgtMTNiNy1kZjQ3LWFjYTktYTA1NmRkYWFmZGMyIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6ZmM4ODU4MjctOGE5NC0xNzQ5LWIxMGMtMDMwNTFmMWQzZjAxIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyIgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIgcGhvdG9zaG9wOklDQ1Byb2ZpbGU9InNSR0IgSUVDNjE5NjYtMi4xIj4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpmYzg4NTgyNy04YTk0LTE3NDktYjEwYy0wMzA1MWYxZDNmMDEiIHN0RXZ0OndoZW49IjIwMTgtMDctMTlUMTk6MDArMTA6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAoV2luZG93cykiLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOmMwOGMxOGJhLTA2MjgtN2U0OS1iMzkwLTMwOGRmMDhkYmY0NSIgc3RFdnQ6d2hlbj0iMjAxOC0wNy0xOVQxOTowMCsxMDowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6ODNmM2QyMTQtMmJhMC0zMjRhLWI3OTEtMDAzMDhhZTBmNDNmIiBzdEV2dDp3aGVuPSIyMDE5LTAxLTA2VDE1OjE5OjA3KzEwOjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PkOhW6IAAAJtSURBVFjD3dhLiI1RHADws5BCihQLJXkTFiLDNFKGsrBWygILG8LIIxtWMiGSZxJ5JMnOQhYeE6KI8shk5ZnXCOOV5GfhTL7G7c6933yf7ufUt7n3/M///M7533vOvQGPMQehoM9itAZ8wKICQzbhWcBzbCgwZC8eBLRiZ4Ehp3E94CZOFBhyCWcDzsenqJA7OBxwPO5KUSGP0BywAw9TDNCAoRlOaAympYh7gaaA9XiaYoBruJLxyp5OEfcOC0I8Q96mGGARfqB3BoihfrfGKuP6x3NwVsBcvEffKgfpiW/xZM3iUGtLETcCnzAhYEhcjZ84gvoqBrqAlgwgD3Gsiv6zcSrOux29k7J9eONPu4qlXezUwrgrvbpZVj8xs0yfAViFW4n5vcA2DEYoFdQPy3EjEfQEuzCxU98e+NzN8tqI1yVen4qDeBnn8AOXsQR9OvevJNEMHE3s1hecw/z4/sl4uqaF3MXWxE32Er4nVv0ApnQ1TrVJB2EtbsdEbbFG32BgCsRYfI3fmu1x1a9jWayMisfq7od0HnbjY4RdiefS+DIxk2M53Ywxr2KtN3ZnLlkdZjv83Z5gTyzNRhxK1HuyrctiDllBZkrfxtUSpOOKUW27mlX+LCHbU0DW1iJkRgrI2FqEdPxsrrRleXPOHFJNea2pZUhDFZDRtQzpuMl21VqyzpsHZGsFkNVFgNRXABlVBEjAgzKIy3nkzAvSXAbSVCTI9DKQkUWCBNwvgbiYV748IVtKQFYWETKtBGR4ESEB9xKIC3nmyhuyOQFZUWRIXQIyrMiQEP8leZR3nn8BOYP9/wOkDpPyzvMLDphwAHNEbf0AAAAASUVORK5CYII=">
+            <a style="font-size: 20px; color: #ccc; font-family: 'CMUBR', 'Helvetica Neue', Arial, sans-serif" target="_blank"
+              href="https://depintel.com/documentation/v087/_build/html/index.html#">Silas documentation</a>
+            | <a style="font-size: 20px; color: #ccc; font-family: 'CMUBR', 'Helvetica Neue', Arial, sans-serif" target="_blank"
+              href="https://www.depintel.com/silas_download.html">Silas Download</a>
+              <br/>
+              <br/>
+            <!-- <span style="display: inline-block; font-size: 12px; color: rgb(105 105 105);">
+              Copyright © 2022 Dependable Intelligence Pty Ltd.<br />
+                All rights reserved.<br />
+                ABN: 28627562814<br />
+            </span> -->
+          </el-card>
+        </div>
+        <!-- <div style="width: 400px;height: 320px;" id="modelInsightChart"></div> -->
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  // window.echarts = echarts;
+  // import * as echarts from 'echarts';
+  new Vue({
+
+    el: '#app',
+    methods: {
+      goPage(pageName) {
+        this.isLoading = true
+        window.location.href = `${document.location.pathname}/${pageName}`
+      },
+      getStastisticData(){
+        let that = this
+        $.ajax({
+          method: 'GET',
+          url: `${document.location.pathname}/getStastisticData`,
+          success: function (result) {
+            console.log('resss',result)
+            that.finishedTrainings = result.finishedTrainings
+            that.gridSearchModels = result.gridSearchModels
+            that.explanations = result.explanations
+          }
+        })
+      },
+      drawMemoryLine() {
+        let memoChart = echarts.init(document.getElementById('memoChart'))
+        let option = this.getMemoryOption()
+        memoChart.setOption(option)
+      },
+      drawCpuChart() {
+        let domArr = document.getElementsByClassName('cpuChart')
+        for (let i = 0; i < domArr.length; i++) {
+          let cpuChart = echarts.init(domArr[i])
+          let option = this.getCpuOption(i + 1)
+          cpuChart.setOption(option)
+        }
+
+      },
+      drawPieChart() {
+        let myChart = echarts.init(document.getElementById('pieChart'))
+        myChart.showLoading();
+        $.get(`${document.location.pathname}/getDiskStatus?search_dir=${this.searchDiskPath}`, function (diskData) {
+          myChart.hideLoading();
+          const formatUtil = echarts.format;
+          function getLevelOption() {
+            return [
+              {
+                itemStyle: {
+                  borderWidth: 0,
+                  gapWidth: 5
+                }
+              },
+              {
+                itemStyle: {
+                  gapWidth: 1
+                }
+              },
+              {
+                colorSaturation: [0.35, 0.5],
+                itemStyle: {
+                  gapWidth: 1,
+                  borderColorSaturation: 0.6
+                }
+              }
+            ];
+          }
+          myChart.setOption(
+            (option = {
+              title: {
+                text: 'Disk Usage',
+                left: 'center',
+                textStyle: {
+                  color: '#fff'
+                }
+              },
+              color: ["rgba(250,150,180,0.8)", "rgba(252,132,82,0.8)", "rgb(228,160,53)", "rgba(62,97,229,0.8)", "rgba(94,184,93,0.8)"],
+              tooltip: {
+                formatter: function (info) {
+                  // print("info",info)
+                  var free = info["free"] || '-';
+                  var used = info.used
+                  var treePathInfo = info.treePathInfo;
+                  var treePath = [];
+                  for (var i = 1; i < treePathInfo.length; i++) {
+                    treePath.push(treePathInfo[i].name);
+                  }
+                  return [
+                    '<div class="tooltip-title">' +
+                    formatUtil.encodeHTML(treePath.join('/')) +
+                    '</div>',
+                    'Used: ' + (info.value/1024/1024/1024).toFixed(2) + ' GB ' 
+                  ].join('');
+                }
+              },
+              series: [
+                {
+                  name: 'Disk Usage',
+                  type: 'treemap',
+                  visibleMin: 300,
+                  label: {
+                    show: true,
+                    formatter: '{b}'
+                  },
+                  itemStyle: {
+                    borderColor: 'rgb(39,41,44)'
+                  },
+                  levels: getLevelOption(),
+                  data: diskData
+                }
+              ]
+            })
+          );
+        });
+
+
+      },
+      getCpuOption(chartIndex) {
+        let base = +new Date(2016, 9, 3);
+        let oneDay = 24 * 3600 * 1000;
+        let valueBase = Math.random() * 300;
+        let valueBase2 = Math.random() * 50;
+        let data = [];
+        let data2 = [];
+        for (var i = 1; i < 10; i++) {
+          var now = new Date((base += oneDay));
+          var dayStr = [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('-');
+          valueBase = Math.round((Math.random() - 0.5) * 20 + valueBase);
+          valueBase <= 0 && (valueBase = Math.random() * 300);
+          data.push([dayStr, valueBase]);
+          valueBase2 = Math.round((Math.random() - 0.5) * 20 + valueBase2);
+          valueBase2 <= 0 && (valueBase2 = Math.random() * 50);
+          data2.push([dayStr, valueBase2]);
+        }
+        option = {
+          title: {
+            bottom: '0px',
+            // left: 'center',
+            text: `core${chartIndex}`,
+            textStyle: {
+              color: '#ccc',
+              fontSize: '12px'
+            }
+          },
+
+          legend: {
+            top: 'bottom',
+            data: ['Intention']
+          },
+          tooltip: {
+            triggerOn: 'none',
+            position: function (pt) {
+              return [pt[0], 130];
+            }
+          },
+          // toolbox: {
+          //   left: 'center',
+          //   itemSize: 25,
+          //   top: 55,
+          //   feature: {
+          //     dataZoom: {
+          //       yAxisIndex: 'none'
+          //     },
+          //     restore: {}
+          //   }
+          // },
+          xAxis: {
+            type: 'time',
+            axisPointer: {
+              value: '2016-10-7',
+              snap: true,
+              lineStyle: {
+                color: 'rgb(225,86,123)',
+                width: 2
+              },
+              label: {
+                show: false,
+                formatter: function (params) {
+
+                  return `core${chartIndex}`;
+                },
+                backgroundColor: 'rgba(0,0,0,0.8)'
+              },
+              handle: {
+                show: true,
+                color: 'rgb(225,86,123)'
+              }
+            },
+            splitLine: {
+              show: false
+            }
+          },
+          yAxis: {
+            type: 'value',
+            axisTick: {
+              inside: true
+            },
+            splitLine: {
+              show: false
+            },
+            axisLabel: {
+              show: false,
+              inside: true,
+              formatter: '{value}\n',
+              color: '#ccc',
+              fontSize: '10px'
+            },
+            textStyle: {
+              color: '#ffff'
+            },
+            z: 10
+          },
+          grid: {
+            top: 110,
+            left: 15,
+            right: 15,
+            height: 160
+          },
+          dataZoom: [{
+            type: 'inside',
+            throttle: 50
+          }],
+          series: [{
+            name: 'Fake Data',
+            type: 'line',
+            smooth: true,
+            symbol: 'circle',
+            symbolSize: 5,
+            sampling: 'average',
+            itemStyle: {
+              color: 'rgb(50,98,237)'
+            },
+            stack: 'a',
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                offset: 0,
+                color: 'rgba(58,77,233,0.8)'
+              },
+              {
+                offset: 1,
+                color: 'rgba(58,77,233,0.3)'
+              }
+              ])
+            },
+            data: data
+          },
+          {
+            name: 'Fake Data',
+            type: 'line',
+            smooth: true,
+            stack: 'a',
+            symbol: 'circle',
+            symbolSize: 5,
+            sampling: 'average',
+            itemStyle: {
+              color: '#F2597F'
+            },
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                offset: 0,
+                color: 'rgba(213,72,120,0.8)'
+              },
+              {
+                offset: 1,
+                color: 'rgba(213,72,120,0.3)'
+              }
+              ])
+            },
+            data: data2
+          }
+          ]
+        };
+        return option
+      },
+      getMemoryOption() {
+        let that = this
+
+        option = {
+          title: {
+            text: 'Memory',
+            subtext: 'memo',
+            textStyle: {
+              color: "#fff"
+            }
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross'
+            }
+          },
+          toolbox: {
+            show: true,
+            feature: {
+              saveAsImage: {}
+            }
+          },
+          xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            // prettier-ignore
+            data: that.cpuMemoDataList.time,
+            axisLabel: {
+              textStyle: {
+                color: "#ccc"
+              }
+            },
+          },
+          yAxis: {
+            type: 'value',
+            axisLabel: {
+              formatter: '{value} %',
+              textStyle: {
+                color: "#ccc"
+              }
+            },
+            axisPointer: {
+              snap: true
+            },
+
+          },
+          visualMap: {
+            show: false,
+            dimension: 0,
+            pieces: [{
+              lte: 6,
+              color: 'rgb(225,86,123)'
+            },
+            {
+              gt: 6,
+              lte: 8,
+              color: 'rgb(50,98,237)'
+            },
+            {
+              gt: 8,
+              lte: 12,
+              color: 'rgb(225,86,123)'
+            },
+            {
+              gt: 12,
+              lte: 16,
+              color: 'rgb(50,98,237)'
+            },
+            {
+              gt: 30,
+              color: 'rgb(225,86,123)'
+            }
+            ]
+          },
+          series: [{
+            name: 'Cpu',
+            type: 'line',
+            smooth: true,
+            // prettier-ignore
+            data: that.cpuMemoDataList.memo,
+            markArea: {
+              itemStyle: {
+                color: 'rgba(215,167,183, 0.2)'
+              },
+              data: [
+                [{
+                  name: '',
+                  yAxis: '100'
+                },
+                {
+                  yAxis: '25'
+                }
+                ],
+                // [{
+                //     name: '',
+                //     xAxis: '17:30'
+                //   },
+                //   {
+                //     xAxis: '21:15'
+                //   }
+                // ]
+              ]
+            }
+          }]
+        };
+        return option
+      },
+    },
+    data() {
+      return {
+        //cpu& memo
+        isLoading: false,
+        cpuMemoDataList: {
+          memo: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+          time: ['-', '-', '-', '-', '-', '-', '-', '-', '-'],
+          cpu: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        },
+        refreshMemoChart: true,
+        diskStatus: [],
+        searchDiskPath: './',
+        finishedTrainings: 0,
+        gridSearchModels: 0,
+        explanations: 0
+      }
+    },
+    mounted() {
+      this.getStastisticData()
+      this.drawCpuChart()
+      this.drawMemoryLine()
+      this.drawPieChart()
+      let that = this
+      setInterval(() => {
+        $.ajax({
+          method: 'GET',
+          url: `${document.location.pathname}/getCpuMemo`,
+          success: function (result) {
+            that.diskStatus = result.tree
+            // that.CPUCount = result.cpunum
+            // that.cpuMemoDataList.push(result)
+            if (that.cpuMemoDataList.time.length > 15) {
+              that.cpuMemoDataList.time.shift()
+              that.cpuMemoDataList.cpu.shift()
+              that.cpuMemoDataList.memo.shift()
+            }
+
+            that.cpuMemoDataList.time.push(result.time)
+            that.cpuMemoDataList.cpu.push(result.cpu)
+            that.cpuMemoDataList.memo.push(result.memo)
+            // console.log('31214',that.cpuMemoDataList)
+            // that.refreshMemoChart = false
+            // setTimeout(() => {
+            //   that.refreshMemoChart = true
+            // })
+            that.drawMemoryLine()
+            // console.log('jjj', that.cpuMemoDataList)
+            // console.log('rrre',result)
+            // let data = JSON.parse(window.sessionStorage.getItem("cpuAndMemo"))
+            // if(!data){
+            //   data = []
+            // }
+            // data.push(result)
+
+            // window.sessionStorage.setItem("cpuAndMemo", JSON.stringify(data));
+            // console.log('daa',data)
+            // data.push(result)
+          }
+        })
+      }, 3000)
+    }
+
+  })
+</script>
+
+</html>
+
+<style>
+  @import url("./silas.css");
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  #app {
+    background-color: rgb(39, 41, 44);
+    color: #fff;
+    font-family: -apple-system, SF UI Text, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
+  }
+
+  header {
+    box-shadow: 1px 1px 10px #000000;
+  }
+
+  header:hover {
+    box-shadow: 1px 1px 20px #000000;
+  }
+
+  #app .content {
+    height: calc(100vh);
+    display: flex;
+    min-width: 600px;
+    overflow: hidden;
+  }
+
+  .page-content {
+    padding: 20px;
+    width: 88%;
+    min-width: 600px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .cpu-con {
+    display: grid;
+    /* border-top: 1px solid #fff; */
+    margin-top: -80px;
+    grid-template-columns: 120px 120px 120px;
+    grid-template-rows: 110px 110px 110px;
+  }
+
+
+
+  .el-divider--horizontal {
+    background-color: #666;
+  }
+
+  .el-menu {
+    border-right: 1px solid rgba(0, 0, 0, 0);
+    text-align: center;
+  }
+
+  .el-menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .el-menu-item,
+  .el-submenu__title {
+    line-height: 26px;
+    font-size: 12px;
+    background-color: rgb(59, 65, 79,0) !important;
+  }
+
+  .el-submenu__title:hover {
+    background-color: rgb(59, 65, 79,0) !important;
+    color: #fff !important;
+  }
+
+  .el-menu-item:hover {
+    background-color: rgb(59, 65, 79,0) !important;
+    color: #fff !important;
+  }
+
+  .statistic-card {
+    position: relative;
+    flex: 1;
+    margin-left: 20px;
+    color: rgb(255, 255, 255);
+    background-color: rgba(59, 65, 79, 0.5);
+    border-color: rgb(59, 65, 79, 0.5);
+    text-align: center;
+    height: 74px;
+
+  }
+
+  .icon-container {
+    position: absolute;
+    top: 12px;
+    height: 50px;
+    width: 50px;
+    border-radius: 40px;
+    text-align: center;
+  }
+
+  .icon-container i {
+    font-weight: 800;
+  }
+
+  .el-menu-item i {
+    color: #fff;
+    font-weight: 800;
+  }
+ .el-input__inner{
+  background-color: rgba(0,0,0,0);
+  color:#fff;
+ }
+</style>

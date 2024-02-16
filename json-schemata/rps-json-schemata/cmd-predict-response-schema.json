@@ -1,0 +1,68 @@
+{
+    "$id": "https://www.depintel.com/mn/json_schemata/cmd-predict-response-schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Command Predict Response",
+    "type": "object",
+    "oneOf": [
+        {
+            "required": [ "command", "status", "data" ],
+            "properties": {
+                "command": { "enum": [ "predict" ] },
+                "status": { "enum": [ "succeeded" ] },
+                "data": {
+                    "type": "object",
+                    "required": [ "patient_id", "predictions" ],
+                    "properties": {
+                        "patient_id": { 
+                            "type": "string", 
+                            "minLength": 18,
+                            "maxLength": 18                    
+                        },
+                        "predictions": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [ "complication", "probability", "factors_importance", "decision_logic" ],
+                                "properties": {
+                                    "complication": { "type": "string" },
+                                    "probability": { 
+                                        "type": "number", 
+                                        "minimum": 0.0, 
+                                        "maximum": 1.0 
+                                    },
+                                    "factors_importance": {
+                                        "type": "object",
+                                        "properties": {
+                                            "DRG": {
+                                                "type": "number", 
+                                                "minimum": 0.0, 
+                                                "maximum": 1.0
+                                            },
+                                            "Age": {
+                                                "type": "number", 
+                                                "minimum": 0.0, 
+                                                "maximum": 1.0
+                                            }
+                                        }
+                                    },
+                                    "decision_logic": {
+                                        "type": "array",
+                                        "items": { "type": "string" }
+                                    }
+                                }
+                            }                    
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "required": [ "command", "status" ],
+            "properties": {
+                "command": { "enum": [ "predict" ] },
+                "status": { "enum": [ "failed" ] }
+            }
+        }
+    ]
+    
+}

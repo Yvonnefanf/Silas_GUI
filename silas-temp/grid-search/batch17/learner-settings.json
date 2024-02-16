@@ -1,0 +1,18 @@
+{
+    "mode": "classification",
+    "reduction-strategy": "none",
+    "grower-settings": {
+        "forest-settings": {
+            "type": "SimpleForest",
+            "number-of-trees": 500,
+            "sampling-proportion": 0.800000011920929,
+            "oob-proportion": 0.05000000074505806
+        },
+        "tree-settings": {
+            "type": "RdGreedy1D",
+            "max-depth": 5,
+            "desired-leaf-size": 1,
+            "feature-proportion": "sqrt"
+        }
+    }
+}

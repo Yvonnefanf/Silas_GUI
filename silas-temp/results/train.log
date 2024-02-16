@@ -1,0 +1,36 @@
+         __ _ _           
+        / _(_) | __ _ ___ 
+        \ \| | |/ _` / __|
+        _\ \ | | (_| \__ \
+        \__/_|_|\__,_|___/
+
+Silas v0.8.7+e
+Copyright (c) 2018-2020 Dependable Intelligence Pty Ltd.
+All rights reserved.
+
+Please address your comments, bug reports and general inquiries about Silas to: support@depintel.com
+
+WARNING: Executable and hardware maximum concurrency do not match:
+-------> Executable maximum concurrency (MAX_CONCURRENCY): 12
+-------> Hardware maximum concurrency: 16
+
+[15:31:50] Settings has been read from: silas-temp/results/settings.json
+[15:31:50] Metadata has been read from: silas-temp/results/metadata.json
+[15:31:50] Validation method: testing sample.
+[15:31:50] 768 training instances have been loaded from: silas-temp/results/../uploads/train.csv
+[15:31:50] 768 testing instances have been loaded from: silas-temp/results/../uploads/test.csv
+[15:31:50] Timer(growing classifier) starts.
+[15:31:50] [15:31:50] [                                                  ] (0.00%)[15:31:50] [**********                                        ] (20.00%)[15:31:50] [********************                              ] (40.00%)[15:31:50] [******************************                    ] (60.00%)[15:31:50] [**************************************************] (100.00%)
+[15:31:50] Timer(growing classifier) stops. Time elapsed: 9 (ms.)
+[15:31:50] Computing performance on testing data instances...
+[15:31:50]    ───────────────────────────────────────────────
+[15:31:50]            Positive  Negative  Accuracy  ROC-AUC  
+[15:31:50]          0   378       122     0.756000  0.924037 
+[15:31:50]          1   238        30     0.888060  0.924037 
+[15:31:50]    ───────────────────────────────────────────────
+[15:31:50]                       Overall     
+[15:31:50]           Accuracy    0.802083    
+[15:31:50]         (M)ROC-AUC    0.924037    
+[15:31:50] 
+[15:31:50] Saving classifier to: silas-temp/results/model
+[15:31:50] [15:31:50] [                                                  ] (0.00%)[15:31:50] [**********                                        ] (20.00%)[15:31:50] [********************                              ] (40.00%)[15:31:50] [******************************                    ] (60.00%)[15:31:50] [**************************************************] (100.00%)

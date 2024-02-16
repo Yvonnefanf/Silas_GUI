@@ -1,0 +1,10 @@
+{
+    "$id": "https://www.depintel.com/mn/json_schemata/cmd-status-query-schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Command Status Query",
+    "type": "object",
+    "required": [ "command" ],
+    "properties": {
+        "command": { "enum": [ "status" ] }
+    }
+}

@@ -1,0 +1,1 @@
+{"task-mode": "classification", "tree-algorithm": "GreedyNarrow1D", "feature-proportion": "sqrt", "max-depth": 12, "desired-leaf-size": 64, "forest-algorithm": "ClassicForest", "number-of-trees": 8, "sampling-proportion": 1, "oob-proportion": 0.05}

@@ -1,0 +1,23 @@
+{
+    "command": "predict",
+    "status": "succeeded",
+    "data": {
+        "patient_id": "blablablablablabla",
+        "predictions": [
+            {
+                "complication": "COMP_Delirium_Flag",
+                "probability": 0.72,
+                "factors_importance": {
+                    "Discharge_Department": 0.33,
+                    "DRG": 0.21,
+                    "Age": 0.2
+                },
+                "decision_logic": [
+                    "Sex ∈ {Male}",
+                    "DRG ∈ {ABEC, EDU1}",
+                    "20 ≤ age < 36"
+                ]
+            }          
+        ]
+    }
+}

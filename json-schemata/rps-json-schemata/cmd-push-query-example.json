@@ -1,0 +1,32 @@
+{
+    "command": "push",
+    "data": {
+        "patient_id": "blablablablablabla",
+        "patient_data": {
+            "administrative_data": { 
+                "admit_data": {
+                    "Admit_Date": "11/04/2015"
+                },
+                "discharge_data": {
+                    "Discharge_Division": "YEP",
+                    "LOS": 4
+                },
+                "personal_data": {
+                    "Birthday": "12/11/1994",
+                    "Sex": "Female"
+                }
+            },
+            "diagnostic_data": { 
+                "codes": {
+                    "DRG": "ABDEC",
+                    "Dementia": 1,
+                    "Inlier_Weight": 1.6
+                },
+                "complications": {
+                    "COMP_Delirium_Flag": 1,
+                    "COMP_LOS": 9
+                }   
+            }            
+        }
+    }
+}

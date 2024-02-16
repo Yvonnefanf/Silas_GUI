@@ -1,0 +1,877 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <script src="{{ url_for('static', filename='js/vue.min.js') }}"></script>
+  <!-- <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script> -->
+  <!-- <script src="{{ url_for('static', filename='js/ace.js') }}"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+
+  <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+  <!-- <script src="./eleui.js"></script> -->
+  <script src="{{ url_for('static', filename='js/eleui.js') }}"></script>
+  <!-- <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script> -->
+  <!-- <script src="https://www.runoob.com/static/js/wonderland.js"></script> -->
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+  <script src="{{ url_for('static', filename='js/d3.v5.min.js') }}"></script>
+</head>
+
+<body>
+  <div id="app">
+    <div class="content" v-loading="isContentLoading" element-loading-text="loading..." element-loading-background="rgba(0, 0, 0, 0.8)" >
+      <el-menu default-active="test" class="el-menu-vertical-demo" background-color="rgb(59, 65, 79,0.5)"
+        text-color="#909399" :router="true" active-text-color="#ffd04b">
+        <div style="padding-top:20px;">
+          <img height="30px"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAoCAYAAAC8cqlMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAGrWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDIgNzkuMTYwOTI0LCAyMDE3LzA3LzEzLTAxOjA2OjM5ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAxOC0wNy0xOVQxOTowMCsxMDowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAxOS0wMS0wNlQxNToxOTowNysxMDowMCIgeG1wOk1vZGlmeURhdGU9IjIwMTktMDEtMDZUMTU6MTk6MDcrMTA6MDAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODNmM2QyMTQtMmJhMC0zMjRhLWI3OTEtMDAzMDhhZTBmNDNmIiB4bXBNTTpEb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6Y2JkNmFmODgtMTNiNy1kZjQ3LWFjYTktYTA1NmRkYWFmZGMyIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6ZmM4ODU4MjctOGE5NC0xNzQ5LWIxMGMtMDMwNTFmMWQzZjAxIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyIgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIgcGhvdG9zaG9wOklDQ1Byb2ZpbGU9InNSR0IgSUVDNjE5NjYtMi4xIj4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpmYzg4NTgyNy04YTk0LTE3NDktYjEwYy0wMzA1MWYxZDNmMDEiIHN0RXZ0OndoZW49IjIwMTgtMDctMTlUMTk6MDArMTA6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAoV2luZG93cykiLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOmMwOGMxOGJhLTA2MjgtN2U0OS1iMzkwLTMwOGRmMDhkYmY0NSIgc3RFdnQ6d2hlbj0iMjAxOC0wNy0xOVQxOTowMCsxMDowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6ODNmM2QyMTQtMmJhMC0zMjRhLWI3OTEtMDAzMDhhZTBmNDNmIiBzdEV2dDp3aGVuPSIyMDE5LTAxLTA2VDE1OjE5OjA3KzEwOjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PkOhW6IAAAJtSURBVFjD3dhLiI1RHADws5BCihQLJXkTFiLDNFKGsrBWygILG8LIIxtWMiGSZxJ5JMnOQhYeE6KI8shk5ZnXCOOV5GfhTL7G7c6933yf7ufUt7n3/M///M7533vOvQGPMQehoM9itAZ8wKICQzbhWcBzbCgwZC8eBLRiZ4Ehp3E94CZOFBhyCWcDzsenqJA7OBxwPO5KUSGP0BywAw9TDNCAoRlOaAympYh7gaaA9XiaYoBruJLxyp5OEfcOC0I8Q96mGGARfqB3BoihfrfGKuP6x3NwVsBcvEffKgfpiW/xZM3iUGtLETcCnzAhYEhcjZ84gvoqBrqAlgwgD3Gsiv6zcSrOux29k7J9eONPu4qlXezUwrgrvbpZVj8xs0yfAViFW4n5vcA2DEYoFdQPy3EjEfQEuzCxU98e+NzN8tqI1yVen4qDeBnn8AOXsQR9OvevJNEMHE3s1hecw/z4/sl4uqaF3MXWxE32Er4nVv0ApnQ1TrVJB2EtbsdEbbFG32BgCsRYfI3fmu1x1a9jWayMisfq7od0HnbjY4RdiefS+DIxk2M53Ywxr2KtN3ZnLlkdZjv83Z5gTyzNRhxK1HuyrctiDllBZkrfxtUSpOOKUW27mlX+LCHbU0DW1iJkRgrI2FqEdPxsrrRleXPOHFJNea2pZUhDFZDRtQzpuMl21VqyzpsHZGsFkNVFgNRXABlVBEjAgzKIy3nkzAvSXAbSVCTI9DKQkUWCBNwvgbiYV748IVtKQFYWETKtBGR4ESEB9xKIC3nmyhuyOQFZUWRIXQIyrMiQEP8leZR3nn8BOYP9/wOkDpPyzvMLDphwAHNEbf0AAAAASUVORK5CYII=">
+          <div>
+            <span style="font-weight: 800; display: inline-block; margin-left: 10px;"><span
+                style="color:#e4a035">Silas</span>
+              Pro</span>
+          </div>
+        </div>
+        <el-divider></el-divider>
+        <el-menu-item index="Home" @click="goPage('index')">
+          <i class="el-icon-s-home"></i>
+          <span slot="title">Home</span>
+        </el-menu-item>
+        <el-menu-item index="train" @click="goPage('trainPage')">
+          <i class="el-icon-document-copy"></i>
+          <span slot="title">Training</span>
+        </el-menu-item>
+        <el-menu-item index="test" @click="goPage('testPage')">
+          <i class="el-icon-reading"></i>
+          <span slot="title">Cross Validation</span>
+        </el-menu-item>
+        <el-menu-item index="pred" @click="goPage('predictPage')">
+          <i class="el-icon-view"></i>
+          <span slot="title">Prediction</span>
+        </el-menu-item>
+        <el-menu-item index="grid" @click="goPage('gridSearchPage')">
+          <i class="el-icon-search"></i>
+          <span slot="title">GridSearch</span>
+        </el-menu-item>
+        <el-menu-item index="extension" @click="goPage('extensionPage')">
+          <i class="el-icon-setting"></i>
+          <span slot="title">Model Explanation</span>
+        </el-menu-item>
+        <el-menu-item index="extension" @click="goPage('extensionPage')">
+          <i class="el-icon-takeaway-box"></i>
+          <span slot="title">Feature Importance</span>
+        </el-menu-item>
+      </el-menu>
+      <div class="page-content" v-loading="isLoading" element-loading-text="Training..."
+        element-loading-background="rgba(0, 0, 0, 0.8)">
+        <el-card
+          style="background-color: rgb(59 65 79 / 50%); border-color: rgb(59 65 79); color:#fff; height: 100%; position: relative; width: 336px;">
+          <el-form class="model-training-form" label-width="140px">
+            <form action="/SilasGUI/validation" enctype="multipart/form-data" method="POST">
+
+              <!input name="hyper_parameters" type="checkbox" />
+
+
+              <div class="form-conatiner">
+                <h3>Param Settings:</h3>
+                <div class="form-item-row">
+                  <span class="form-item-label">Task:</span>
+                  <select v-model="lastSettings['task-mode']" name="task-mode" class="el-input__inner" style="height: 30px;line-height: 30px;">
+                    <option value="classification" selected>classification</option>
+                    <option value="regression">regression</option>
+                  </select>
+                </div>
+
+
+                <div class="form-item-row">
+                  <span class="form-item-label">Tree Algorithm:</span>
+                  <select v-model="lastSettings['tree-algorithm']" name="tree-algorithm" class="el-input__inner" style="height: 30px;line-height: 30px;">
+                    <option value="GreedyNarrow1D">GreedyNarrow1D</option>
+                    <option value="RdGreedy1D">RdGreedy1D</option>
+                    <option value="SimpleTreeGrower">SimpleTreeGrower</option>
+                    <option value="RdGreedyReg1D">RdGreedyReg1D</option>
+                  </select>
+                </div>
+
+                <div class="form-item-row">
+                  <span class="form-item-label">Feature Proportion:</span>
+                  <select v-model="lastSettings['feature-proportion']" name="feature-proportion" value="SQRT" class="el-input__inner"
+                    style="height: 30px;line-height: 30px;">
+                    <option value="sqrt">sqrt</option>
+                    <option value="log">log</option>
+                    <option value="log2">log2</option>
+                    <option value="golden">golden</option>
+                  </select>
+                </div>
+
+
+                <div class="form-item-row">
+                  <span class="form-item-label">Maximum Tree Depth:</span>
+
+                  <input type="text" name="max-depth" v-model="lastSettings['max-depth']" class="el-input__inner"
+                    style="height: 30px;line-height: 30px;">
+                </div>
+
+                <div class="form-item-row">
+                  <span class="form-item-label">Desired Leaf Size:</span>
+                  <input type="text" name="desired-leaf-size" v-model="lastSettings['desired-leaf-size']"
+                    class="el-input__inner" style="height: 30px;line-height: 30px;">
+                </div>
+
+                <div class="form-item-row">
+                  <span class="form-item-label">Forest Algorithm:</span>
+                  <select v-model="lastSettings['forest-algorithm']" name="forest-algorithm" class="el-input__inner" style="height: 30px;line-height: 30px;">
+                    <option value="ClassicForest">ClassicForest</option>
+                    <option value="PrototypeSampleForest">PrototypeSampleForest</option>
+                    <option value="SimpleForest">SimpleForest</option>
+                    <option value="SimpleValueForest">SimpleValueForest</option>
+                    <option value="SimpleRegForest">SimpleRegForest</option>
+                    <option value="SimpleOOBRegForest">SimpleOOBRegForest</option>
+                    <option value="AdaBoostForest">AdaBoostForest</option>
+                    <option value="CascadeForest">CascadeForest</option>
+                  </select>
+                </div>
+
+                <div class="form-item-row">
+                  <span class="form-item-label">Number of Trees:</span>
+
+                  <input type="text" name="number-of-trees" v-model="lastSettings['number-of-trees']"
+                    class="el-input__inner" style="height: 30px;line-height: 30px;"> &nbsp
+
+                </div>
+
+                <div class="form-item-row">
+                  <span class="form-item-label">Sampling Proportion:</span>
+
+                  <input type="text" name="sampling-proportion" v-model="lastSettings['sampling-proportion']"
+                    class="el-input__inner" style="height: 30px;line-height: 30px;">
+                </div>
+
+                <div class="form-item-row">
+                  <span class="form-item-label">OOB Proportion:</span>
+                  <input type="text" name="oob-proportion" v-model="lastSettings['oob-proportion']"
+                    class="el-input__inner" style="height: 30px;line-height: 30px;">
+                </div>
+
+
+                <div class="form-item-row">
+                  <span class="form-item-label">number of Partitions:</span>
+                  <input type="text" name="number-of-partitions" v-model="lastSettings['number-of-partitions']"
+                    class="el-input__inner" style="height: 30px;line-height: 30px;">
+                </div>
+                <el-divider></el-divider>
+                <el-upload class="upload-demo" style="margin-bottom: 20px;" :data="{'fileName':'train.csv'}"
+                  action="http://127.0.0.1:3333/SilasGUI/uploadFile" :file-list="fileList" :limit="1" accept=".csv"
+                  :on-success="handleSuccess" :on-remove="handleRemove">
+                  <el-button size="small" type="primary" style="width: 100%;" v-if="!canClick"><i class="el-icon-upload"></i> Training
+                    File</el-button>
+                  <el-button size="small" type="primary" style="width: 100%;" v-else slot='tip' disabled><i class="el-icon-upload"></i> Training
+                      File</el-button>
+                  <!-- <div slot="tip" class="el-upload__tip">最多可上传5个，文件大小不超过50MB</div> -->
+                </el-upload>
+                <input style="margin-top: 10px; width: 100%;" type="submit" value="Cross Validation" class="silas-btn"
+                  @click="startValidation">
+
+              </div>
+            </form>
+
+
+
+          </el-form>
+        </el-card>
+        <div class="train-result" style="padding:0 20px; width: 99%;">
+          <el-card class="train-reslut-table"
+            style="background-color: rgb(59 65 79 / 50%); border:none; color: #fff; text-align: center; height: 230px;">
+            <div style="display:flex; justify-content: space-around; margin-top: -10px;">
+              <h3>Validation Result <span style="font-size: 12px; color: #ccc;"></span></h3>
+              <h3>Last Setting<span style="font-size: 12px; color: #ccc;"></span></h3>
+            </div>
+   
+            <!-- <div style="display:flex"> -->
+            <div style="display:flex">
+              <el-card style="background-color: rgb(59 65 79 / 50%); border:none; color: #fff; text-align: center; padding:10px;height: 144px; width: 100%;    font-family: monospace;
+                  text-align: justify; overflow: auto;">
+                <!-- <h4>OverAll </h4> -->
+
+                <!-- <el-divider></el-divider> -->
+                <div v-for="item in trainResult" style="font-size:14px;white-space:wrap;">
+                  <span v-for="ele in item" style="display: inline-block; width: 90px; overflow: hidden; text-overflow: ellipsis;" v-html="ele"></span>
+
+                </div>
+
+              </el-card>
+              <el-card style="background-color: rgb(59 65 79 / 50%); border:none; color: #fff; text-align: center; padding:0 10px;height: 164px; width: 100%;    font-family: monospace;
+                text-align: justify;">
+                <!-- <h3>Last Setting:</h3> -->
+                <div ref="editorContainer" style="height: 160px;"></div>
+
+
+                <!-- <span style="font-size:12px;white-space:wrap;display: block;" v-html="lastSettings"> -->
+
+                </span>
+
+              </el-card>
+
+
+
+            </div>
+
+
+          </el-card>
+
+          <el-card class="train-reslut-table" v-loading="isTreeLoading" element-loading-text="Tree Loading..."
+            element-loading-background="rgba(0, 0, 0, 0.8)"
+            style="background-color: rgb(59 65 79 / 50%); border:none; color: #fff; text-align: center; margin-top: 20px;">
+            <h3>Tree Model Visulization</h3>
+            <div v-if="refresh" class="tree-visual-container"
+              style="display: flex; height: calc(100vh - 368px); font-family: monospace; min-height: 400px;">
+              <el-card
+                style="padding:0;background-color: rgba(70, 70, 70, 0.1); border-color: rgb(47 47 47 / 80%); color:#fff;">
+                <div style="width: 100px; height: 100%; overflow: auto;">
+                  <div class="tree-item" v-for="(item,index) in treeDataList" :key="index"
+                    @click="updateCurrentTree(index)" :class="currentTreeIndex == index? 'current': '' ">
+                    <div style="height:30px; line-height:30px; cursor: pointer;" v-html="`Tree# ${index}`">
+                    </div>
+                  </div>
+                </div>
+              </el-card>
+
+              <div style="flex:1; padding: 10px; border: 1px dashed #ccc; position: relative;">
+                <h3 style="text-align: center;">Tree: <span v-html="currentTreeIndex"></span></h3>
+                <el-divider></el-divider>
+                <div class="node-info">
+
+                  <span v-html="nodeInfo"></span>
+                </div>
+                <svg id="svgChart">
+
+                </svg>
+              </div>
+
+            </div>
+          </el-card>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  new Vue({
+
+    el: '#app',
+    data() {
+
+      return {
+        editor: null,
+        trainRes: [{ index: 0, Positive: 405, Negative: 95, Accuracy: 0.810000, "ROC-AUC": 0.957284 },
+        { index: 1, Positive: 249, Negative: 19, Accuracy: 0.929105, "ROC-AUC": 0.957284 }],
+        treeDataList: [],
+        refresh: true,
+        currentTreeIndex: 0,
+        isLoading: false,
+        isContentLoading:false,
+        nodeInfo: 'Node Detail:\n-',
+        isTreeLoading: false,
+        trainResult: [],
+        fileList: [],
+        canClick:false,
+        lastSettings: {
+          "desired-leaf-size": "64",
+          "feature-proportion": "sqrt",
+          "file_path_train": "silas-temp/results/train.csv",
+          "file_path_valid": "silas-temp/results/train.csv",
+          "forest-algorithm": "ClassicForest",
+           "max-depth": "64", 
+          "number-of-trees": "2", 
+          "oob-proportion": "0.05", 
+          "sampling-proportion": "1.0", 
+          "task-mode": "classification", 
+          "tree-algorithm": "GreedyNarrow1D", 
+          "number-of-partitions": 1,
+          "number-of-runs":1
+        }
+      }
+    },
+    methods: {
+      goPage(pageName) {
+        this.isContentLoading = true
+        if (pageName === 'index') {
+          window.location.href = `http://127.0.0.1:3333/SilasGUI`
+        } else {
+          console.log('0000')
+          let arr = document.location.pathname.split('/')
+          arr.pop()
+          let newStr = arr.join('/')
+          window.location.href = `${newStr}/${pageName}`
+        }
+      },
+      getTrainResult() {
+
+        let needLines = []
+        let that = this
+        $.ajax({
+          method: 'GET',
+          url: `${document.location.pathname}/getTrainResult`,
+          success: function (res) {
+            result = res.TrainResult
+            that.lastSettings = res.setting_data
+            that.setEditor()
+            // console.log(that.edito)
+            // that.editor.setValue(that.lastSettings)
+            function getArr(str) {
+              let arr = str.split(' ')
+              let newarr = []
+              for (let i = 0; i < arr.length; i++) {
+                if (arr[i] !== '' && arr[i] !== '\n' && arr[i] !== '0' && arr[i] !== '1' && arr[i] !== 'tested_negative'&& arr[i] !== 'tested_positive') {
+                  newarr.push(arr[i])
+                }
+              }
+              return newarr
+            }
+            for (let i = 0; i < result.length; i++) {
+              let str = result[i]
+              if (str.includes('──────────────')) {
+
+
+                that.trainResult.push(getArr(result[i + 1]))
+                that.trainResult.push(getArr(result[i + 2]))
+                that.trainResult.push(getArr(result[i + 3]))
+              }
+            }
+
+          }
+        });
+
+      },
+      uploadeTrain() {
+        document.getElementById("trainfile").click()
+      },
+      uploadeValid() {
+        document.getElementById("validfile").click()
+      },
+      
+      handleSuccess(res, file, fileList) {
+
+        console.info(fileList, res, file, "fileList")
+        this.canClick = true
+      },
+      handleRemove(){
+        this.canClick = false
+      },
+      startValidation() {
+        this.isLoading = true
+
+      },
+      setEditor(){
+        setTimeout(() => {
+          this.editor = window.ace.edit(this.$refs.editorContainer);
+          console.log(" this.editor", this.editor)
+          this.editor.setTheme("ace/theme/clouds_midnight");
+          this.editor.session.setMode("ace/mode/javascript");
+
+          this.editor.setValue(JSON.stringify(this.lastSettings,null, 2), -1)
+          this.editor.setReadOnly(true)
+          // this.editor
+        })
+      },
+      draModelInsightChart() {
+        setTimeout(() => {
+          let modelInsightChart = echarts.init(document.getElementById('modelInsightChart'))
+          console.log('modelInsightChart', modelInsightChart)
+          let option = this.getModelInsightOption()
+          modelInsightChart.setOption(option)
+        })
+
+      },
+      updateCurrentTree(index) {
+        this.currentTreeIndex = index;
+        this.initTree(this.treeDataList[index])
+      },
+
+      initTree(data) {
+        let that = this
+
+        const width = window.innerWidth - 800;
+        const height = window.innerHeight - 500;
+
+        const svg = d3.select('#svgChart')
+          .attr('width', width)
+          .attr('height', height);
+        // remove before svg
+        console.log(svg._groups[0][0])
+        while (svg._groups[0][0]?.firstChild) {
+          svg._groups[0][0].removeChild(svg._groups[0][0].lastChild);
+        }
+
+        const g = svg.append('g').attr('transform', 'translate(0, 20)');
+
+
+
+        //node.data, node.depth, node.height, node.parent, node.children, node.value
+
+        function formatTreeData(data) {
+          if (data.left && (data.left.left || data.left.right)) {
+            formatTreeData(data.left)
+          }
+          if (data.right && data.right && (data.right.left || data.right.right)) {
+            formatTreeData(data.right)
+          }
+
+
+          if (data.right && data.right) {
+            data.children = [data.left, data.right]
+          } else if (data.right) {
+            data.children = [{}, data.right]
+          } else {
+            data.children = [data.left]
+          }
+
+        }
+
+        formatTreeData(data)
+        data.name = 'Root'
+        const hierarchyData = d3.hierarchy(data);
+
+
+
+
+        //d3.tree()返回tree layout,后续链式写法对layout进行配置
+        const treeLayout = d3.tree()
+          .size([width, height - 30])
+          .separation((a, b) => {
+            return a.parent === b.parent ? 1 : 2;
+          });
+
+        //将数据扔进layout,获取更易于布局的数据nodesData, 相对hierarchyData, 所有数据加上了.x,.y属性
+        const nodesData = treeLayout(hierarchyData);
+
+        const links = g.selectAll('.links')
+          .data(nodesData.descendants().slice(1))
+          .enter().append('path')
+          .attr('fill', 'none')
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 1)
+          .attr('d', (d) => {
+            return `
+                M${d.x},${d.y}
+                C${d.x},${(d.y + d.parent.y) / 2}
+                ${d.parent.x},${(d.y + d.parent.y) / 2.5}
+                ${d.parent.x},${d.parent.y}`;
+          });
+
+        const nodes = g.selectAll('.node')
+          .data(nodesData.descendants())
+          .enter().append('g')
+          .attr('transform', (d) => {
+            return `translate(${d.x}, ${d.y})`;
+          });
+
+        //画圆 
+        nodes.append('circle')
+          .style('fill', 'rgb(33, 100, 246)')
+          .attr('stroke', '#fff')
+          .attr('stroke-width', 2)
+          .attr('r', 10).on('click', function (d) {
+            let circles = g.selectAll('circle')?._groups[0]
+
+            for (let i = 0; i < circles.length; i++) {
+              circles[i].attributes.style.value = "fill: rgb(33, 100, 246);"
+            }
+
+            if (d3.select(this).style("fill") != "rgb(228, 160, 53)") {
+              d3.select(this).style("fill", "rgb(228, 160, 53)");
+            }
+            that.nodeInfo = 'Node Detail:\n'
+            Object.keys(d.data).forEach(key => {
+              if (key != 'left' && key != 'right' && key != 'children' && key != 'partition') {
+                that.nodeInfo += `${key}: ${d.data[key]}\n`
+              }
+            })
+          });
+
+        //插入文字
+        nodes.append('text')
+          .attr('dx', '.6em')
+          .attr('fill', '#fff')
+          .attr('x', 5)
+          .text((d) => {
+            return d.data.featureIndex ? `${d.data.featureIndex}` : `node`;
+          });
+      },
+      getModelInsightOption() {
+        let option = {
+          // backgroundColor: '#2c343c',
+          title: {
+            text: 'Model Insight',
+            left: 'center',
+            top: 20,
+            textStyle: {
+              color: '#ccc'
+            }
+          },
+          tooltip: {
+            trigger: 'item'
+          },
+          visualMap: {
+            show: false,
+            min: 80,
+            max: 600,
+            inRange: {
+              colorLightness: [0, 1]
+            }
+          },
+          series: [{
+            name: 'Access From',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '50%'],
+            data: [{
+              value: 335,
+              name: 'Direct'
+            },
+            {
+              value: 310,
+              name: 'Email'
+            },
+            {
+              value: 274,
+              name: 'Union Ads'
+            },
+            {
+              value: 235,
+              name: 'Video Ads'
+            },
+            {
+              value: 400,
+              name: 'Search Engine'
+            },
+            ].sort(function (a, b) {
+              return a.value - b.value;
+            }),
+            roseType: 'radius',
+            label: {
+              color: 'rgba(255, 255, 255, 0.3)'
+            },
+            labelLine: {
+              lineStyle: {
+                color: 'rgba(255, 255, 255, 0.3)'
+              },
+              smooth: 0.2,
+              length: 10,
+              length2: 20
+            },
+            itemStyle: {
+              color: '#f4a317',
+              shadowBlur: 200,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            },
+            animationType: 'scale',
+            animationEasing: 'elasticOut',
+            animationDelay: function (idx) {
+              return Math.random() * 200;
+            }
+          }]
+        };
+        return option
+      },
+    },
+
+
+    mounthed() {
+      this.draModelInsightChart()
+    
+    },
+    created() {
+      let that = this
+      this.isTreeLoading = true
+      // this.draModelInsightChart()
+      $.ajax({
+        method: 'GET',
+        url: `${document.location.pathname}/getTreeData`,
+        success: function (result) {
+          console.log('rrre', result)
+
+          that.treeDataList = result.treeDataList
+          if (that.treeDataList && that.treeDataList.length) {
+            that.initTree(that.treeDataList[that.currentTreeIndex])
+          }
+          that.isTreeLoading = false
+
+        }
+      });
+      this.getTrainResult()
+      
+
+    }
+  
+
+  })
+</script>
+
+</html>
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  #app {
+    background-color: rgb(39, 41, 44);
+    color: #fff;
+    font-family: -apple-system, SF UI Text, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
+  }
+
+  header {
+    box-shadow: 1px 1px 10px #000000;
+  }
+
+  header:hover {
+    box-shadow: 1px 1px 20px #000000;
+  }
+
+  #app .content {
+    height: calc(100vh);
+    display: flex;
+    min-width: 900px;
+    min-height: 750px;
+  }
+
+  .el-divider--horizontal {
+    background-color: #666;
+  }
+
+  .el-menu {
+    border-right: 1px solid rgba(0, 0, 0, 0);
+    text-align: center;
+  }
+
+  .el-menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .el-menu-item,
+  .el-submenu__title {
+    line-height: 26px;
+    font-size: 12px;
+    background-color: rgba(59, 65, 79, 0) !important;
+  }
+
+  .el-submenu__title:hover {
+    background-color: rgba(59, 65, 79, 0) !important;
+    color: #fff !important;
+  }
+
+  .el-menu-item:hover {
+    background-color: rgba(59, 65, 79, 0) !important;
+    color: #fff !important;
+  }
+
+  .page-content {
+    padding: 20px;
+    display: flex;
+    width: 100%;
+  }
+
+  .model-training-form {
+    margin-top: 20px;
+    font-size: 14px;
+  }
+
+  .el-form-item__label {
+    color: #fff;
+  }
+
+  .el-input__inner,
+  .el-select-dropdown__list,
+  .el-select-dropdown__item {
+    background-color: rgb(59 65 79 / 70%);
+    color: #fff;
+    border: 1px solid rgb(110, 110, 110);
+  }
+
+  .el-select-dropdown__item.hover,
+  .el-select-dropdown__item:hover {
+    background-color: #000;
+  }
+
+  .el-select .el-input__inner:focus,
+  .el-range-editor.is-active,
+  .el-range-editor.is-active:hover,
+  .el-select .el-input.is-focus .el-input__inner,
+  .el-input__inner:focus {
+    border-color: #e4a035;
+  }
+
+  .el-select-dropdown__item.selected {
+    color: #e4a035;
+  }
+
+  .el-button--primary {
+    background-color: #e4a035;
+    border-color: #e4a035;
+  }
+
+  .el-button--primary:focus,
+  .el-button--primary:hover,
+  .el-button--primary.is-disabled,
+  .el-button--primary.is-disabled:focus,
+  .el-button--primary.is-disabled:hover {
+    background-color: #eebd6e;
+    border-color: #f5cc8b;
+  }
+
+  .layout-middle-content {
+    margin-top: 20px;
+    display: flex;
+    height: calc(100vh - 190px);
+  }
+
+  .title {
+    font-weight: 800;
+  }
+
+  .form-conatiner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 80px);
+    min-height: 550px;
+
+    /* flex-wrap:wrap; */
+    justify-content: space-around;
+  }
+
+  .form-item-row {
+    display: flex;
+    align-items: center;
+    width: 300px;
+    height: 7%;
+  }
+
+  .form-item-label {
+    display: inline-block;
+    margin-right: 10px;
+    display: inline-block;
+    width: 120px;
+  }
+
+  .el-card__body {
+    padding-top: 0;
+  }
+
+  .train-result {
+    flex: 1;
+    padding: 0 50px;
+  }
+
+  .tree-item.current {
+    color: #e4a035;
+    font-weight: 900;
+    background-color: rgb(37, 37, 37);
+  }
+
+  .tree-item {
+    text-align: center;
+    border-bottom: 1px dashed rgb(96, 96, 96);
+  }
+
+  .node-info {
+    position: absolute;
+    white-space: pre-wrap;
+    right: 20px;
+    max-height: 200px;
+    width: 200px;
+    overflow: auto;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 10px;
+  }
+
+  .el-table tr {
+    background-color: rgba(59, 65, 79, 0.5);
+    color: #fff;
+  }
+
+  .el-table tbody tr:hover>td {
+    background-color: rgb(59, 65, 79) !important;
+  }
+
+  .el-table th.el-table__cell {
+    background-color: rgb(59, 65, 79);
+    color: #fff;
+    font-size: 16px;
+  }
+
+  .el-table .el-table__cell {
+    text-align: center;
+    font-size: 12px;
+    padding: 9px 0;
+  }
+
+  .el-menu-item i {
+    color: #fff;
+    font-weight: 800;
+  }
+
+  .train-reslut-table .el-card__body {
+    padding: 10px;
+  }
+
+  .el-table td.el-table__cell,
+  .el-table th.el-table__cell.is-leaf {
+    border-bottom: 1px solid rgb(59, 65, 79);
+  }
+
+  .el-table,
+  .el-table__expanded-cell {
+    background-color: unset;
+  }
+
+  .el-table__row>td {
+    border: none;
+  }
+
+  .el-table::before {
+    height: 0;
+  }
+
+  .silas-btn {
+    /* height: 24px; */
+    line-height: 20px;
+    border: 1px solid #e4a035;
+    color: #e4a035;
+    width: 170px;
+    cursor: pointer;
+    padding: 6px 10px;
+    text-align: center;
+    font-weight: 800;
+    border-radius: 3px;
+    background: #3b414f;
+
+  }
+
+  .silas-btn:hover {
+    /* color: #e4a035; */
+    border: 1px solid #e4a035;
+    cursor: pointer;
+    background: #e4a035;
+    color: #fff;
+  }
+
+  .el-upload {
+    width: 100%;
+  }
+
+  .el-upload-list {
+    height: 15px;
+  }
+
+  .el-upload-list__item:hover {
+    background-color: #3b414f;
+  }
+</style>

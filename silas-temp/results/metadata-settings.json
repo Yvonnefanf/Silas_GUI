@@ -1,0 +1,54 @@
+{
+    "missing-value-place-holders": [
+        "",
+        "NA",
+        "na",
+        " ",
+        "?",
+        "*",
+        "NaN",
+        "nan",
+        "NULL",
+        "Null",
+        "null",
+        "."
+    ],
+    "attribute-settings": [
+        {
+            "name": "feat1",
+            "type": "numerical"
+        },
+        {
+            "name": "feat2",
+            "type": "numerical"
+        },
+        {
+            "name": "feat3",
+            "type": "numerical"
+        },
+        {
+            "name": "feat4",
+            "type": "numerical"
+        },
+        {
+            "name": "feat5",
+            "type": "numerical"
+        },
+        {
+            "name": "feat6",
+            "type": "numerical"
+        },
+        {
+            "name": "feat7",
+            "type": "numerical"
+        },
+        {
+            "name": "feat8",
+            "type": "numerical"
+        },
+        {
+            "name": "target",
+            "type": "numerical"
+        }
+    ]
+}

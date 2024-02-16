@@ -1,0 +1,88 @@
+{
+    "$id": "https://www.depintel.com/mn/json_schemata/cmd-push-query-schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Command Push Query",
+    "type": "object",
+    "required": [ "command", "data" ],
+    "properties": {
+        "command": { "enum": [ "push" ] },
+        "data": {
+            "type": "object",
+            "required": [ "patient_id", "patient_data" ],
+            "properties": {
+                "patient_id": { 
+                    "type": "string", 
+                    "minLength": 18,
+                    "maxLength": 18                    
+                },
+                "patient_data": {
+                    "type": "object",         
+                    "properties": {
+                        "administrative_data": { 
+                            "type": "object",
+                            "properties": {
+                                "admit_data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "Admit_Date": { 
+                                            "type": "string", 
+                                            "minLength": 8,
+                                            "maxLength": 10
+                                        },
+                                        "Care_Type": { "type": "integer" }
+                                    }
+                                },
+                                "discharge_data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "Discharge_Division": { 
+                                            "type": "string", 
+                                            "minLength": 3,
+                                            "maxLength": 4 
+                                        },
+                                        "LOS": { "type": "integer", "minimum": 0 }
+                                    }
+                                },
+                                "personal_data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "Sex": { "enum": [ "Female", "Male" ] },
+                                        "Birthday": {  
+                                            "type": "string", 
+                                            "minLength": 8,
+                                            "maxLength": 10
+                                        }
+                                    }
+                                }     
+                            }
+                        },
+                        "diagnostic_data": { 
+                            "type": "object",
+                            "properties": {
+                                "codes": {
+                                    "type": "object",
+                                    "properties": {
+                                        "DRG": { "type": "string" },
+                                        "Dementia": { "enum": [ 0, 1 ] },
+                                        "Principal_Diagnosis": { "type": "string" },
+                                        "Inlier_Weight": { 
+                                            "type": "number", 
+                                            "minimum": 0.0 
+                                        }
+                                    }
+                                },
+                                "complications": {
+                                    "type": "object", 
+                                    "properties": {
+                                        "COMP_Delirium_Flag": { "enum": [ 0, 1 ] },
+                                        "COMP_LOS": { "type": "integer", "minimum": 0 }
+                                    }
+                                }                                
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

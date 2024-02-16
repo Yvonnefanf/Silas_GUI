@@ -1,0 +1,44 @@
+{
+    "mode": "classification",
+    "reduction-strategy": [
+        "none",
+        "one-vs-rest",
+        "one-vs-one"
+    ],
+    "forest-type": [
+        "SimpleForest",
+        "ClassicForest",
+        "CascadeForest"
+    ],
+    "tree-type": [
+        "RdGreedy1D",
+        "GreedyNarrow1D",
+        "SimpleTreeGrower"
+    ],
+    "number-of-trees": [
+        100,
+        500
+    ],
+    "sampling-proportion": [
+        0.8,
+        1.0
+    ],
+    "oob-proportion": [
+        0.05,
+        0.1
+    ],
+    "max-depth": [
+        5,
+        64
+    ],
+    "desired-leaf-size": [
+        1,
+        64
+    ],
+    "feature-proportion": [
+        "sqrt",
+        "golden",
+        "all",
+        "1/3"
+    ]
+}

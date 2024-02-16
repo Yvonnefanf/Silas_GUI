@@ -1,0 +1,413 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <script src="{{ url_for('static', filename='js/vue.min.js') }}"></script>
+  <!-- <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script> -->
+  <!-- <script src="{{ url_for('static', filename='js/ace.js') }}"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+
+  <!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+  <!-- <script src="./eleui.js"></script> -->
+  <script src="{{ url_for('static', filename='js/eleui.js') }}"></script>
+  <!-- <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script> -->
+  <!-- <script src="https://www.runoob.com/static/js/wonderland.js"></script> -->
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+  <script src="{{ url_for('static', filename='js/d3.v5.min.js') }}"></script>
+  <script src="./silas.css"></script>
+</head>
+
+<body>
+  <div id="app">
+
+    <div class="content" v-loading="isContentLoading" element-loading-text="loading..." element-loading-background="rgba(0, 0, 0, 0.8)">
+      <el-menu default-active="predict" class="el-menu-vertical-demo" background-color="rgb(59, 65, 79,0.5)" text-color="#909399"
+        :router="true" active-text-color="#ffd04b">
+        <div style="padding-top:20px;">
+          <img height="30px"
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAoCAYAAAC8cqlMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAGrWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxNDIgNzkuMTYwOTI0LCAyMDE3LzA3LzEzLTAxOjA2OjM5ICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdEV2dD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlRXZlbnQjIiB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiB4bXA6Q3JlYXRlRGF0ZT0iMjAxOC0wNy0xOVQxOTowMCsxMDowMCIgeG1wOk1ldGFkYXRhRGF0ZT0iMjAxOS0wMS0wNlQxNToxOTowNysxMDowMCIgeG1wOk1vZGlmeURhdGU9IjIwMTktMDEtMDZUMTU6MTk6MDcrMTA6MDAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6ODNmM2QyMTQtMmJhMC0zMjRhLWI3OTEtMDAzMDhhZTBmNDNmIiB4bXBNTTpEb2N1bWVudElEPSJhZG9iZTpkb2NpZDpwaG90b3Nob3A6Y2JkNmFmODgtMTNiNy1kZjQ3LWFjYTktYTA1NmRkYWFmZGMyIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6ZmM4ODU4MjctOGE5NC0xNzQ5LWIxMGMtMDMwNTFmMWQzZjAxIiBkYzpmb3JtYXQ9ImltYWdlL3BuZyIgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIgcGhvdG9zaG9wOklDQ1Byb2ZpbGU9InNSR0IgSUVDNjE5NjYtMi4xIj4gPHhtcE1NOkhpc3Rvcnk+IDxyZGY6U2VxPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0iY3JlYXRlZCIgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpmYzg4NTgyNy04YTk0LTE3NDktYjEwYy0wMzA1MWYxZDNmMDEiIHN0RXZ0OndoZW49IjIwMTgtMDctMTlUMTk6MDArMTA6MDAiIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkFkb2JlIFBob3Rvc2hvcCBDQyAoV2luZG93cykiLz4gPHJkZjpsaSBzdEV2dDphY3Rpb249InNhdmVkIiBzdEV2dDppbnN0YW5jZUlEPSJ4bXAuaWlkOmMwOGMxOGJhLTA2MjgtN2U0OS1iMzkwLTMwOGRmMDhkYmY0NSIgc3RFdnQ6d2hlbj0iMjAxOC0wNy0xOVQxOTowMCsxMDowMCIgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgc3RFdnQ6Y2hhbmdlZD0iLyIvPiA8cmRmOmxpIHN0RXZ0OmFjdGlvbj0ic2F2ZWQiIHN0RXZ0Omluc3RhbmNlSUQ9InhtcC5paWQ6ODNmM2QyMTQtMmJhMC0zMjRhLWI3OTEtMDAzMDhhZTBmNDNmIiBzdEV2dDp3aGVuPSIyMDE5LTAxLTA2VDE1OjE5OjA3KzEwOjAwIiBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZG9iZSBQaG90b3Nob3AgQ0MgKFdpbmRvd3MpIiBzdEV2dDpjaGFuZ2VkPSIvIi8+IDwvcmRmOlNlcT4gPC94bXBNTTpIaXN0b3J5PiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PkOhW6IAAAJtSURBVFjD3dhLiI1RHADws5BCihQLJXkTFiLDNFKGsrBWygILG8LIIxtWMiGSZxJ5JMnOQhYeE6KI8shk5ZnXCOOV5GfhTL7G7c6933yf7ufUt7n3/M///M7533vOvQGPMQehoM9itAZ8wKICQzbhWcBzbCgwZC8eBLRiZ4Ehp3E94CZOFBhyCWcDzsenqJA7OBxwPO5KUSGP0BywAw9TDNCAoRlOaAympYh7gaaA9XiaYoBruJLxyp5OEfcOC0I8Q96mGGARfqB3BoihfrfGKuP6x3NwVsBcvEffKgfpiW/xZM3iUGtLETcCnzAhYEhcjZ84gvoqBrqAlgwgD3Gsiv6zcSrOux29k7J9eONPu4qlXezUwrgrvbpZVj8xs0yfAViFW4n5vcA2DEYoFdQPy3EjEfQEuzCxU98e+NzN8tqI1yVen4qDeBnn8AOXsQR9OvevJNEMHE3s1hecw/z4/sl4uqaF3MXWxE32Er4nVv0ApnQ1TrVJB2EtbsdEbbFG32BgCsRYfI3fmu1x1a9jWayMisfq7od0HnbjY4RdiefS+DIxk2M53Ywxr2KtN3ZnLlkdZjv83Z5gTyzNRhxK1HuyrctiDllBZkrfxtUSpOOKUW27mlX+LCHbU0DW1iJkRgrI2FqEdPxsrrRleXPOHFJNea2pZUhDFZDRtQzpuMl21VqyzpsHZGsFkNVFgNRXABlVBEjAgzKIy3nkzAvSXAbSVCTI9DKQkUWCBNwvgbiYV748IVtKQFYWETKtBGR4ESEB9xKIC3nmyhuyOQFZUWRIXQIyrMiQEP8leZR3nn8BOYP9/wOkDpPyzvMLDphwAHNEbf0AAAAASUVORK5CYII=">
+          <div>
+            <span style="font-weight: 800; display: inline-block; margin-left: 10px;"><span
+                style="color:#e4a035">Silas</span>
+              Pro</span>
+          </div>
+        </div>
+        <el-divider></el-divider>
+        <el-menu-item index="Home" @click="goPage('index')">
+          <i class="el-icon-s-home"></i>
+          <span slot="title">Home</span>
+        </el-menu-item>
+        <el-menu-item index="train" @click="goPage('trainPage')">
+          <i class="el-icon-document-copy"></i>
+          <span slot="title">Training</span>
+        </el-menu-item>
+        <el-menu-item index="test" @click="goPage('testPage')">
+          <i class="el-icon-reading"></i>
+          <span slot="title">Cross Validation</span>
+        </el-menu-item>
+        <el-menu-item index="predict" @click="goPage('predictPage')">
+          <i class="el-icon-view"></i>
+          <span slot="title">Prediction</span>
+        </el-menu-item>
+        <el-menu-item index="grid" @click="goPage('gridSearchPage')">
+          <i class="el-icon-search"></i>
+          <span slot="title">GridSearch</span>
+        </el-menu-item>
+        <el-menu-item index="extension" @click="goPage('extensionPage')">
+          <i class="el-icon-setting"></i>
+          <span slot="title">Model Explanation</span>
+        </el-menu-item>
+        <el-menu-item index="extension" @click="goPage('extensionPage')">
+          <i class="el-icon-takeaway-box"></i>
+          <span slot="title">Feature importance</span>
+        </el-menu-item>
+      </el-menu>
+      <div class="page-content">
+        <el-card
+        style="background-color: rgb(59, 65, 79,0.5); border-color: rgb(59, 65, 79,0.5); color:#fff; height: 120px; width: 100%;">
+        <el-form class="model-training-form" label-width="180px">
+
+    
+
+        
+            <b><i class="el-icon-s-tools"></i> Param setting:</b>
+
+            <div class="form-conatiner">
+             
+                <div class="form-item-row">
+                  <span class="model-path">Model Path:</span>
+                <el-select v-model="modelPath" style="margin-left: 10px;">
+                  <el-tooltip class="item" effect="dark" content="path: silas-temp/results/model" placement="right-start">
+                    <el-option value="silas-temp/results/model" label="Trained model">
+                    </el-option>
+                  </el-tooltip>
+                  <el-tooltip class="item" effect="dark" content="path: silas-temp/validation-results/model" placement="right-start">
+                    <el-option value="silas-temp/validation-results/model" label="Validated model">
+                    </el-option>
+                  </el-tooltip>
+
+
+                </el-select>
+        
+                </div>
+  
+             
+  
+                <div class="form-item-row"><span class="" style="width: 130px">Unlabelled Dataset:</span>
+                  <el-upload class="upload-demo" :data="{'fileName':'unlabeled.csv'}"
+                  action="http://127.0.0.1:3333/SilasGUI/uploadFile" :file-list="fileList" :limit="1" accept=".csv"
+                  :on-success="handleSuccess" :on-remove="handleRemove">
+                  <el-button size="small" type="primary" v-if="!canClick"><i class="el-icon-upload"></i> Unlabelled Dataset File</el-button>
+                  <el-button size="small" type="primary" v-else slot='tip' disabled ><i class="el-icon-upload"></i> Unlabelled Dataset File</el-button>
+                  <!-- <div slot="tip" class="el-upload__tip">最多可上传5个，文件大小不超过50MB</div> -->
+                 </el-upload>
+                  <!-- <span style="border-radius:3px;padding: 10px;border:1px solid #ccc;font-size: 16px;font-weight: 800; cursor: pointer;" @click="uploadeUnlabeled"><a><i class="el-icon-upload2"></i>upload</a></span>  
+                  <input type="file" name="file_pred" style="display: none;" id="unlabelledfile"> -->
+                </div>
+             
+
+              <input value="Start Prediction" class="silas-btn" @click="Prediction">
+            </div>
+
+
+        </el-form>
+
+      </el-card>
+      <el-divider></el-divider>
+      <div class="result-container" v-loading="showLoading" element-loading-background="rgba(0, 0, 0, 0.8)">
+        <h3>Prediction Result</h3>
+        <div class="prediction-res">
+          <!-- <el-button size="mini" style="position: absolute; right: 40px;"><i class="el-icon-download"></i> Download</el-button> -->
+          <div v-for="(item,index) in list" :key="index" v-html="item"></div>
+        </div>
+
+      </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+<script>
+  // window.echarts = echarts;
+  // import * as echarts from 'echarts';
+  new Vue({
+
+    el: '#app',
+    data(){
+      return {
+        list: [],
+        fileList:[],
+        modelPath:'silas-temp/results/model',
+        showLoading:false,
+        canClick:false,
+        isContentLoading: false,
+      }
+    },
+    methods: {
+      goPage(pageName) {
+        this.isContentLoading = true
+        if (pageName === 'index') {
+          window.location.href = `http://127.0.0.1:3333/SilasGUI`
+        }else{
+          let arr = document.location.pathname.split('/')
+          arr.pop()
+          let newStr = arr.join('/')
+          window.location.href = `${newStr}/${pageName}`
+        }
+      },
+      Prediction(){
+        let that = this
+       
+        $.ajax({
+          method: 'POST',
+          url: `${document.location.pathname}/prediction`,
+          contentType: 'application/json;charset=utf-8',//请求数据类型必须有
+          data: JSON.stringify({
+            "model_path": that.modelPath,
+          }),
+          success: function (result) {
+
+            that.showLoading = false
+            that.getPredictionRes()
+
+          }
+        });
+      },
+      getPredictionRes(){
+        let that = this
+        let type = 'train'
+
+        this.showLoading = true
+        if (this.modelPath =='silas-temp/validation-results/model'){
+          type = 'validation'
+        }
+        $.ajax({
+          method: 'GET',
+          url: `${document.location.pathname}/getRes?type=${type}`,
+          success: function (result) {
+            console.log('res',result)
+            that.showLoading = false
+            if(result){
+              that.list = result.final_list
+            }
+          }
+        })
+      },
+      uploadeUnlabeled(){
+        document.getElementById("unlabelledfile").click()
+      },
+      handleSuccess(res, file, fileList) {
+        console.info(fileList, res, file, "fileList")
+        this.canClick = true
+      },
+      handleRemove(){
+        this.canClick = false
+      }
+
+     
+    },
+
+     
+    mounthed() {
+      console.log('89898989')
+      this.draModelInsightChart()
+    },
+    created(){
+      // console.log('3333')
+      // this.getPredictionRes()
+     
+    }
+
+  })
+</script>
+
+</html>
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  #app {
+    background-color: rgb(39, 41, 44);
+    color: #fff;
+    font-family: -apple-system, SF UI Text, Arial, PingFang SC, Hiragino Sans GB, Microsoft YaHei, WenQuanYi Micro Hei, sans-serif;
+  }
+
+  header {
+    box-shadow: 1px 1px 10px #000000;
+  }
+
+  header:hover {
+    box-shadow: 1px 1px 20px #000000;
+  }
+
+  #app .content {
+    height: calc(100vh);
+    display: flex;
+    min-width: 900px;
+  }
+
+  .el-divider--horizontal {
+    background-color: #666;
+  }
+  .el-menu {
+    border-right: 1px solid rgba(0, 0, 0, 0);
+    text-align: center;
+  }
+
+  .el-menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .el-menu-item,
+  .el-submenu__title {
+    line-height: 26px;
+    font-size: 12px;
+    background-color: rgb(59, 65, 79,0) !important;
+  }
+
+  .el-submenu__title:hover {
+    background-color: rgb(59, 65, 79,0) !important;
+    color: #fff !important;
+  }
+
+  .el-menu-item:hover {
+    background-color: rgb(59, 65, 79,0) !important;
+    color: #fff !important;
+  }
+  .el-menu-item i {
+    color: #fff;
+    font-weight: 800;
+  }
+
+  .page-content {
+    padding: 20px;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+  }
+  .result-container{
+    text-align: center;
+    white-space:pre-wrap; 
+    
+  }
+  .prediction-res{
+    font-family: monospace;
+    padding: 30px 0;
+    height: calc(100vh -  350px);
+    border: 1px dashed #ccc;
+    overflow: auto;
+  }
+
+
+  .model-training-form {
+    margin-top: 20px;
+  }
+
+  .el-form-item__label {
+    color: #fff;
+  }
+
+  .el-input__inner,
+  .el-select-dropdown__list,
+  .el-select-dropdown__item {
+    background-color: rgb(40, 40, 40);
+    color: #fff;
+  }
+
+  .el-select-dropdown__item.hover,
+  .el-select-dropdown__item:hover {
+    background-color: #000;
+  }
+
+  .el-select .el-input__inner:focus,
+  .el-range-editor.is-active,
+  .el-range-editor.is-active:hover,
+  .el-select .el-input.is-focus .el-input__inner,
+  .el-input__inner:focus {
+    border-color: #e4a035;
+  }
+
+  .el-select-dropdown__item.selected {
+    color: #e4a035;
+  }
+
+  .el-button--primary {
+    background-color: #e4a035;
+    border-color: #e4a035;
+  }
+  .el-button--primary:focus,
+  .el-button--primary:hover,
+  .el-button--primary.is-disabled,
+  .el-button--primary.is-disabled:focus,
+  .el-button--primary.is-disabled:hover
+   {
+    background-color: #eebd6e;
+    border-color: #f5cc8b;
+  }
+
+  .layout-middle-content {
+    margin-top: 20px;
+    display: flex;
+    height: calc(100vh - 190px);
+  }
+
+  .title {
+    font-weight: 800;
+  }
+
+  .form-conatiner {
+    width: 100%;
+    display: flex;
+    height: 50%;
+    align-items: center;
+    font-size: 12px;
+    /* flex-wrap:wrap; */
+    /* justify-content: space-around; */
+  }
+
+  .form-item-row {
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+  }
+
+  .form-item-label {
+    display: inline-block;
+    margin-right: 10px;
+    display: inline-block;
+    width: 100px;
+  }
+
+  .el-card__body {
+    padding-top: 0;
+  }
+  .silas-btn {
+    /* height: 24px; */
+    line-height: 20px;
+    border: 1px solid #e4a035;
+    color: #e4a035;
+    width: 200px;
+    cursor: pointer;
+    padding: 6px 10px;
+    text-align: center;
+    font-weight: 800;
+    border-radius: 3px;
+    background: #3b414f;
+    
+  }
+  .silas-btn:hover{
+    /* color: #e4a035; */
+    border: 1px solid #e4a035;
+    cursor: pointer;
+    background: #e4a035;
+    color: #fff;
+  }
+</style>
