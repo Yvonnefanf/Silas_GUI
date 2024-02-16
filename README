@@ -16,13 +16,13 @@ If runs correctly, the following message will be displayed:
      * Serving Flask app "silas_web.py" (lazy loading)
      * Environment: development
      * Debug mode: on
-     * Running on http://your.ip.address.xxx:yyyy/ (Press CTRL+C to quit)
+     * Running on http://127.0.0.1:3333 (Press CTRL+C to quit)
      * Restarting with stat
      * Debugger is active!
      * Debugger PIN: 597-494-743
 
 3. Open a browser and enter:
-http://your.ip.address.xxx:yyyy/
+http://127.0.0.1:3333
 
 
 
